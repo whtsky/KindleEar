@@ -214,8 +214,8 @@ msgid "The website dont allow register, you can ask owner for a account."
 msgstr ""
 "本站不开放注册，需要管理员先添加账号然后才能使用对应账号登录使用相应服务。"
 
-msgid "Only display last 10 logs"
-msgstr "只显示最后10条日志"
+msgid "Only display last 30 logs"
+msgstr "只显示最后30条日志"
 
 msgid "Time"
 msgstr "时间"

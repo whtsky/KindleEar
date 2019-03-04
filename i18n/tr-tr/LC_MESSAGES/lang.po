@@ -218,8 +218,8 @@ msgstr ""
 "Yeni bir hesap açmak için bir site yönetici ile iletişime geçmeniz "
 "gerekmektedir."
 
-msgid "Only display last 10 logs"
-msgstr "Sadece son 10 işlem kaydını gösterir."
+msgid "Only display last 30 logs"
+msgstr "Sadece son 30 işlem kaydını gösterir."
 
 msgid "Time"
 msgstr "Tarih/Saat"
