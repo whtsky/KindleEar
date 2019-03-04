@@ -2,7 +2,7 @@ workflow "Deploy To GAE" {
   on = "push"
   resolves = [
     "Deploy B",
-    "Show Config"
+    "Show Config",
   ]
 }
 
@@ -35,15 +35,8 @@ action "Show Config" {
   args = "config list"
 }
 
-action "update DOMAIN" {
-  uses = "actions/bin/sh@master"
-  args = "sed -i \"s/^DOMAIN = \\\"http\\(\\|s\\):\\/\\/.*\\.appspot\\.com\\/\\\"/DOMAIN = \\\"http:\\/\\/$CLOUDSDK_CORE_PROJECT\\.appspot\\.com\\/\\\"/g\" ./config.py"
-  secrets = ["CLOUDSDK_CORE_PROJECT"]
-}
-
 action "update SRC_EMAIL" {
-  uses = "actions/bin/sh@master"
-  needs = ["update DOMAIN"]
-  args = "sed -i \"s/^SRC_EMAIL = \\\".*\\\"/SRC_EMAIL = \\\"$SRC_EMAIL\\\"/g\" ./config.py"
+  uses = "docker://python:2.7"
   secrets = ["SRC_EMAIL"]
+  args = "python tweak_config.py"
 }

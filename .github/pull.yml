@@ -5,4 +5,5 @@ rules:
     mergeMethod: hardreset
   - base: dev
     upstream: master
+    mergeMethod: merge
 label: ":arrow_heading_down: pull"
