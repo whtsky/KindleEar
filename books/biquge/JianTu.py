@@ -9,6 +9,6 @@ def getBook():
 
 
 class JianTu(xxbiqugebase):
-    title = u'[小说]剑徒之路'
-    description = u'惰堕'
-    feeds = 'https://www.xxbiquge.com/81_81514/'
+    title = u"[小说]剑徒之路"
+    description = u"惰堕"
+    feeds = "https://www.xxbiquge.com/81_81514/"

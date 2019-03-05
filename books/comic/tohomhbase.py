@@ -25,22 +25,22 @@ class ToHoMHBaseBook(BaseComicBook):
 
         result = opener.open(url)
         if result.status_code != 200 or not result.content:
-            self.log.warn('fetch comic page failed: %s' % url)
+            self.log.warn("fetch comic page failed: %s" % url)
             return chapterList
 
-        content = self.AutoDecodeContent(result.content, decoder,
-                                         self.feed_encoding, opener.realurl,
-                                         result.headers)
+        content = self.AutoDecodeContent(
+            result.content, decoder, self.feed_encoding, opener.realurl, result.headers
+        )
 
-        soup = BeautifulSoup(content, 'html.parser')
-        soup = soup.find("ul", {"id": 'detail-list-select-2'})
+        soup = BeautifulSoup(content, "html.parser")
+        soup = soup.find("ul", {"id": "detail-list-select-2"})
         if not soup:
-            self.log.warn('chapterList is not exist.')
+            self.log.warn("chapterList is not exist.")
             return chapterList
 
-        lias = soup.findAll('a')
+        lias = soup.findAll("a")
         if not lias:
-            self.log.warn('chapterList href is not exist.')
+            self.log.warn("chapterList href is not exist.")
             return chapterList
 
         for a in lias:
@@ -49,7 +49,7 @@ class ToHoMHBaseBook(BaseComicBook):
 
         return chapterList
 
-    #获取漫画图片列表
+    # 获取漫画图片列表
     def getImgList(self, url):
         decoder = AutoDecoder(isfeed=False)
         opener = URLOpener(self.host, timeout=60)
@@ -57,13 +57,13 @@ class ToHoMHBaseBook(BaseComicBook):
 
         result = opener.open(url)
         if result.status_code != 200 or not result.content:
-            self.log.warn('fetch comic page failed: %s' % url)
+            self.log.warn("fetch comic page failed: %s" % url)
             return imgList
 
-        content = self.AutoDecodeContent(result.content, decoder,
-                                         self.feed_encoding, opener.realurl,
-                                         result.headers)
-        soup = BeautifulSoup(content, 'html.parser')
+        content = self.AutoDecodeContent(
+            result.content, decoder, self.feed_encoding, opener.realurl, result.headers
+        )
+        soup = BeautifulSoup(content, "html.parser")
         scripts = soup.findAll("script", {"type": "text/javascript"})
         for script in scripts:
             if "nextPlayDataUrl " in script.text:
@@ -71,7 +71,7 @@ class ToHoMHBaseBook(BaseComicBook):
                 break
 
         if not raw_content:
-            self.log.warn('raw_content href is not exist.')
+            self.log.warn("raw_content href is not exist.")
             return imgList
 
         did = re.search("did=(\d+)", raw_content).group(1)
@@ -80,10 +80,11 @@ class ToHoMHBaseBook(BaseComicBook):
 
         for i in range(pcount):
             url = "https://www.tohomh123.com/action/play/read?did={}&sid={}&iid={}".format(
-                did, sid, str(i + 1))
+                did, sid, str(i + 1)
+            )
             img_result = opener.open(url)
             if img_result.status_code != 200 or not img_result.content:
-                self.log.warn('fetch comic API failed: %s' % url)
+                self.log.warn("fetch comic API failed: %s" % url)
                 return imgList
             imgList.append(json.loads(img_result.content)["Code"])
 
