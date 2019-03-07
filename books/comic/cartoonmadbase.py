@@ -24,6 +24,8 @@ class CartoonMadBaseBook(BaseComicBook):
         result = opener.open(url)
         if result.status_code != 200 or not result.content:
             self.log.warn("fetch comic page failed: %s" % url)
+            self.log.warn(result.status_code)
+            self.log.warn(result.content)
             return chapterList
 
         content = self.AutoDecodeContent(

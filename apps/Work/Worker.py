@@ -168,6 +168,7 @@ class Worker(BaseHandler):
         sections = OrderedDict()
         toc_thumbnails = {}  # map img-url -> manifest-href
         for bk in bks:
+            main.log.info("Process book <%s>" % bk.title)
             if bk.builtin:
                 cbook = BookClass(bk.title)
                 if not cbook:

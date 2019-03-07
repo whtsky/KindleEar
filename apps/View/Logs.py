@@ -29,14 +29,14 @@ class Mylogs(BaseHandler):
                 DeliverLog.all()
                 .filter("username = ", user.name)
                 .order("-time")
-                .fetch(limit=30)
+                .fetch(limit=100)
             )
         except NeedIndexError:  # 很多人不会部署，经常出现没有建立索引的情况，干脆碰到这种情况直接消耗CPU时间自己排序得了
             mylogs = sorted(
                 DeliverLog.all().filter("username = ", user.name),
                 key=attrgetter("time"),
                 reverse=True,
-            )[:30]
+            )[:100]
 
         # 其他用户的推送记录
         logs = {}

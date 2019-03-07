@@ -35,7 +35,7 @@ __builtin__.__dict__["main"] = Main_Var
 main.supported_languages = supported_languages
 main.log = log
 main.__Version__ = __Version__
-log.setLevel(logging.INFO if IsRunInLocal else logging.WARN)
+log.setLevel(logging.DEBUG if IsRunInLocal else logging.INFO)
 
 import web
 import jinja2

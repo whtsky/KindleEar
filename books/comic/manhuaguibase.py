@@ -89,7 +89,11 @@ class ManHuaGuiBaseBook(BaseComicBook):
 
         result = opener.open(url)
         if result.status_code != 200 or not result.content:
-            self.log.warn("fetch comic page failed: %s" % url)
+            self.log.warn(
+                "fetch comic page failed: {} (status code {}, content {})".format(
+                    url, result.status_code, result.content
+                )
+            )
             return chapterList
 
         content = self.AutoDecodeContent(
