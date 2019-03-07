@@ -25,6 +25,9 @@ libraries:
   - name: pycrypto
     version: "latest"
 
+  - name: six
+    version: "latest"
+
 inbound_services:
   - mail
 
