@@ -16,12 +16,12 @@ import random
 from collections import OrderedDict
 from apps.BaseHandler import BaseHandler
 from apps.dbModels import *
-from apps.utils import InsertToc, local_time, get_exc_location
+from apps.utils import InsertToc, local_time
 from lib.makeoeb import *
 from calibre.ebooks.conversion.mobioutput import MOBIOutput
 from calibre.ebooks.conversion.epuboutput import EPUBOutput
 from calibre.utils.bytestringio import byteStringIO
-from books import BookClasses, BookClass
+from books import BookClass
 from books.base import BaseFeedBook, BaseComicBook
 from books.comic import ComicBaseClasses, comic_domains
 

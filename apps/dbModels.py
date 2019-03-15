@@ -138,7 +138,7 @@ class DeliverLog(db.Model):
     time = db.StringProperty()
     datetime = db.DateTimeProperty()
     book = db.StringProperty()
-    status = db.StringProperty()
+    status = db.StringProperty(multiline=True)
 
 
 # added 2017-09-01 记录已经推送的期数/章节等信息，可用来处理连载的漫画/小说等

@@ -16,6 +16,7 @@ from utils import *
 from config import *
 from apps.dbModels import *
 from google.appengine.api import mail
+from google.appengine.api import urlfetch
 import sendgrid
 from sendgrid.helpers.mail import Email, Content, Mail, Attachment
 from google.appengine.api.mail_errors import (
@@ -92,7 +93,7 @@ class BaseHandler:
             )
             dl.put()
         except Exception as e:
-            default_log.warn("DeliverLog failed to save:%s", str(e))
+            default_log.exception("DeliverLog failed to save.")
 
     @classmethod
     def sendgrid_sendmail(self, _apikey, _from, _to, _subject, _body, attachments=[]):
@@ -127,6 +128,7 @@ class BaseHandler:
     def SendToKindle(
         self, name, to, title, booktype, attachment, tz=TIMEZONE, filewithtime=True
     ):
+        urlfetch.set_default_fetch_deadline(60)
         if PINYIN_FILENAME:  # 将中文文件名转换为拼音
             from calibre.ebooks.unihandecode.unidecoder import Unidecoder
 
@@ -145,9 +147,15 @@ class BaseHandler:
             filename = basename
 
         sgenable, sgapikey = self.getsgapikey(name)
+        status = []
+        if SENDMAIL_ALL_POSTFIX:
+            filename = filename.replace(".", "_")
+            title = title.replace(".", "_")
         for i in range(SENDMAIL_RETRY_CNT + 1):
+            using_sendmail = False
             try:
                 if i < SENDMAIL_RETRY_CNT and sgenable and sgapikey:
+                    using_sendmail = True
                     self.sendgrid_sendmail(
                         sgapikey,
                         SRC_EMAIL,
@@ -165,121 +173,62 @@ class BaseHandler:
                         attachments=[(filename, attachment)],
                     )
             except OverQuotaError as e:
-                if i < SENDMAIL_RETRY_CNT:
+                if using_sendmail:
                     default_log.warn(
-                        "overquota when sendmail to %s:%s, retry!" % (to, str(e))
+                        "overquota when sendmail to %s:%s, use gae mail" % (to, str(e))
                     )
-                    self.deliverlog(
-                        name,
-                        str(to),
-                        title,
-                        len(attachment),
-                        tz=tz,
-                        status="over quota",
-                    )
-                    time.sleep(10)
+                    sgenable = sgapikey = None
+                    status.append("sendmail over quota")
                 else:
                     default_log.warn("overquota when sendmail to %s:%s" % (to, str(e)))
-                    self.deliverlog(
-                        name,
-                        str(to),
-                        title,
-                        len(attachment),
-                        tz=tz,
-                        status="over quota",
-                    )
+                    status.append("over quota")
                     break
             except InvalidSenderError as e:
                 default_log.warn(
                     "UNAUTHORIZED_SENDER when sendmail to %s:%s" % (to, str(e))
                 )
-                self.deliverlog(
-                    name,
-                    str(to),
-                    title,
-                    len(attachment),
-                    tz=tz,
-                    status="wrong SRC_EMAIL",
-                )
+                status.append("wrong SRC_EMAIL")
                 break
             except InvalidAttachmentTypeError as e:  # 继续发送一次
-                if SENDMAIL_ALL_POSTFIX:
-                    filename = filename.replace(".", "_")
-                    title = title.replace(".", "_")
-                else:
-                    default_log.warn(
-                        "InvalidAttachmentTypeError when sendmail to %s:%s"
-                        % (to, str(e))
-                    )
-                    self.deliverlog(
-                        name,
-                        str(to),
-                        title,
-                        len(attachment),
-                        tz=tz,
-                        status="invalid postfix",
-                    )
-                    break
+                default_log.warn(
+                    "InvalidAttachmentTypeError when sendmail to %s:%s"
+                    % (to, str(e))
+                )
+                status.append("invalid postfix")
+                break
             except DeadlineExceededError as e:
-                if i < SENDMAIL_RETRY_CNT and sgenable and sgapikey:
+                if using_sendmail:
                     default_log.warn(
                         "timeout when sendmail to %s:%s, retry!" % (to, str(e))
                     )
-                    self.deliverlog(
-                        name,
-                        str(to),
-                        title,
-                        len(attachment),
-                        tz=tz,
-                        status="sendgrid timeout",
-                    )
+                    status.append("sendgrid timeout")
                     time.sleep(5)
                 else:
                     default_log.warn(
                         "timeout when sendmail to %s:%s, abort!" % (to, str(e))
                     )
-                    self.deliverlog(
-                        name, str(to), title, len(attachment), tz=tz, status="timeout"
-                    )
+                    status.append("timeout")
                     break
             except Exception as e:
-                if i < SENDMAIL_RETRY_CNT and sgenable and sgapikey:
-                    default_log.warn(
-                        "sendgrid sendmail to %s failed:%s. Try google api."
-                        % (to, str(e))
+                if using_sendmail:
+                    default_log.exception(
+                        "sendgrid sendmail to %s failed. Retry."
+                        % to
                     )
-                    self.deliverlog(
-                        name,
-                        str(to),
-                        title,
-                        len(attachment),
-                        tz=tz,
-                        status="sendgrid failed",
-                    )
+                    status.append("sendgrid failed")
                 else:
-                    default_log.warn("sendmail to %s failed:%s. " % (to, str(e)))
-                    self.deliverlog(
-                        name,
-                        str(to),
-                        title,
-                        len(attachment),
-                        tz=tz,
-                        status="send failed",
-                    )
+                    default_log.exception("sendmail to %s failed. " % to)
+                    status.append("send failed")
                     break
             else:
-                if i < SENDMAIL_RETRY_CNT and sgenable and sgapikey:
-                    self.deliverlog(
-                        name,
-                        str(to),
-                        title,
-                        len(attachment),
-                        tz=tz,
-                        status="sendgrid ok",
-                    )
+                if using_sendmail:
+                    status.append("sendgrid ok")
                 else:
-                    self.deliverlog(name, str(to), title, len(attachment), tz=tz)
+                    status.append("gae mail ok")
                 break
+        self.deliverlog(
+            name, str(to), title, len(attachment), tz=tz, status="\n".join(status)
+        )
 
     # TO可以是一个单独的字符串，或一个字符串列表，对应发送到多个地址
     @classmethod
