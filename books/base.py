@@ -1716,7 +1716,9 @@ class BaseComicBook(BaseFeedBook):
             result = opener.open(url)
             content = result.content
             if not content:
-                continue
+                raise Exception(
+                    "Failed to download %s: code %s" % url, result.status_code
+                )
 
             content = self.adjustImgContent(content)
             if content == None:
@@ -1917,7 +1919,9 @@ class BaseComicBook(BaseFeedBook):
                             graying=opts.graying_image,
                             reduceto=opts.reduce_image_to,
                         )
-                        image = chop_image(image, MANGA_CROP_PAGE_NUMBER_POWER, MANGA_CROP_MARGIN_POWER)
+                        image = chop_image(
+                            image, MANGA_CROP_PAGE_NUMBER_POWER, MANGA_CROP_MARGIN_POWER
+                        )
                         images.append(image)
                     return images
                 else:
@@ -1927,7 +1931,9 @@ class BaseComicBook(BaseFeedBook):
                         graying=opts.graying_image,
                         reduceto=opts.reduce_image_to,
                     )
-                    image = chop_image(image, MANGA_CROP_PAGE_NUMBER_POWER, MANGA_CROP_MARGIN_POWER)
+                    image = chop_image(
+                        image, MANGA_CROP_PAGE_NUMBER_POWER, MANGA_CROP_MARGIN_POWER
+                    )
                     return image
         except:
             self.log.exception("Process comic image failed.")
