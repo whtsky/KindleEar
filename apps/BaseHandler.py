@@ -362,33 +362,4 @@ class BaseHandler:
         kwargs.setdefault("nickname", main.session.get("username"))
         kwargs.setdefault("lang", main.session.get("lang", "en"))
         kwargs.setdefault("version", main.__Version__)
-        html = main.jjenv.get_template(templatefile).render(title=title, **kwargs)
-
-        # 将内部的小图像转换为内嵌的base64编码格式，减小http请求数量，提升效率
-        soup = BeautifulSoup(html, "lxml")
-        for img in soup.find_all("img"):
-            imgurl = img["src"] if "src" in img.attrs else ""
-            if not imgurl or imgurl.startswith("data:"):
-                continue
-
-            # 假定没有外链的图片，所有的图片都是本站的
-            parts = urlparse.urlparse(imgurl)
-            imgPath = parts.path
-            if imgPath.startswith(r"/"):
-                imgPath = imgPath[1:]
-
-            d = ""
-            try:  # 这个在调试环境是不行的，不过部署好就可以用了
-                with open(imgPath, "rb") as f:
-                    d = f.read()
-            except Exception as e:
-                continue
-            else:
-                mime = imghdr.what(None, d)
-                if mime:
-                    base64str = base64.encodestring(d)
-                    if len(base64str) < 30000:
-                        data = "data:image/%s;base64,%s" % (mime, base64str)
-                        img["src"] = data
-
-        return unicode(soup)
+        return main.jjenv.get_template(templatefile).render(title=title, **kwargs)

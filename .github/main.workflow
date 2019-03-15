@@ -10,9 +10,15 @@ action "Run msgfmt" {
   uses = "whtsky/msgfmt-action@master"
 }
 
+action "dev branch only" {
+  uses = "actions/bin/filter@b2bea07"
+  args = "branch dev"
+}
+
 action "GCP Authenticate" {
   uses = "actions/gcloud/auth@1a017b23ef5762d20aeb3972079a7bce2c4a8bfe"
   secrets = ["GCLOUD_AUTH"]
+  needs = ["dev branch only"]
 }
 
 action "Deploy A" {
