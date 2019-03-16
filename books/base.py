@@ -11,6 +11,7 @@ from urllib2 import *
 from bs4 import BeautifulSoup, Comment, NavigableString, CData, Tag
 from lib import feedparser
 from lib.readability import readability
+from lib.image import chop_image
 from lib.urlopener import URLOpener
 from lib.autodecoder import AutoDecoder
 from apps.dbModels import LastDelivered
@@ -1905,26 +1906,29 @@ class BaseComicBook(BaseFeedBook):
                 return data
             else:
                 # 如果图被拆分，则返回一个图像列表，否则返回None
+                raw_images = self.SplitWideImage(data) or [data]
                 splitedImages = self.SplitWideImage(data)
                 if splitedImages:
                     images = []
                     for image in splitedImages:
-                        images.append(
-                            rescale_image(
-                                image,
-                                png2jpg=opts.image_png_to_jpg,
-                                graying=opts.graying_image,
-                                reduceto=opts.reduce_image_to,
-                            )
+                        image = rescale_image(
+                            image,
+                            png2jpg=opts.image_png_to_jpg,
+                            graying=opts.graying_image,
+                            reduceto=opts.reduce_image_to,
                         )
+                        image = chop_image(image, MANGA_CROP_PAGE_NUMBER_POWER, MANGA_CROP_MARGIN_POWER)
+                        images.append(image)
                     return images
                 else:
-                    return rescale_image(
+                    image = rescale_image(
                         data,
                         png2jpg=opts.image_png_to_jpg,
                         graying=opts.graying_image,
                         reduceto=opts.reduce_image_to,
                     )
+                    image = chop_image(image, MANGA_CROP_PAGE_NUMBER_POWER, MANGA_CROP_MARGIN_POWER)
+                    return image
         except:
             self.log.exception("Process comic image failed.")
             return data
