@@ -107,10 +107,10 @@ class RemoveLogs(BaseHandler):
                 user.enable_send = False
                 user.put()
 
-        # 清理30天之前的推送记录
+        # 清理3天之前的推送记录
         query = DeliverLog.all()
         query.filter(
-            "datetime < ", datetime.datetime.utcnow() - datetime.timedelta(days=30)
+            "datetime < ", datetime.datetime.utcnow() - datetime.timedelta(days=3)
         )
         logs = query.fetch(1000)
         c = len(logs)
