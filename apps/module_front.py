@@ -57,8 +57,6 @@ from apps.utils import fix_filesizeformat
 # sys.setdefaultencoding('utf-8')
 
 for book in BookClasses():  # 添加内置书籍
-    if memcache.get(book.title):  # 使用memcache加速
-        continue
     b = Book.all().filter("title = ", book.title).get()
     if not b:
         b = Book(
@@ -69,24 +67,7 @@ for book in BookClasses():  # 添加内置书籍
             separate=False,
         )
         b.put()
-        memcache.add(book.title, book.description, 86400)
 
-
-class Test(BaseHandler):
-    def GET(self):
-        s = ""
-        for d in os.environ:
-            s += (
-                "<pre><p>"
-                + str(d).rjust(28)
-                + " | "
-                + str(os.environ[d])
-                + "</p></pre>"
-            )
-        return s
-
-
-main.urls += ["/test", "Test"]
 
 application = web.application(main.urls, globals())
 store = MemcacheStore(memcache)
