@@ -135,7 +135,7 @@ class Deliver(BaseHandler):
                         times = [times]
                     if h not in times:
                         continue
-                elif user.send_time != h:
+                elif h % 3 != 0:
                     continue
 
                 # 到了这里才是需要推送的
