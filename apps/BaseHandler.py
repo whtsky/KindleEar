@@ -191,8 +191,7 @@ class BaseHandler:
                 break
             except InvalidAttachmentTypeError as e:  # 继续发送一次
                 default_log.warn(
-                    "InvalidAttachmentTypeError when sendmail to %s:%s"
-                    % (to, str(e))
+                    "InvalidAttachmentTypeError when sendmail to %s:%s" % (to, str(e))
                 )
                 status.append("invalid postfix")
                 break
@@ -211,10 +210,7 @@ class BaseHandler:
                     break
             except Exception as e:
                 if using_sendmail:
-                    default_log.exception(
-                        "sendgrid sendmail to %s failed. Retry."
-                        % to
-                    )
+                    default_log.exception("sendgrid sendmail to %s failed. Retry." % to)
                     status.append("sendgrid failed")
                 else:
                     default_log.exception("sendmail to %s failed. " % to)
