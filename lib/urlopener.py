@@ -137,16 +137,18 @@ class URLOpener:
                         else:
                             if response.status_code == 555:
                                 response.status_code = 533
+                            default_log.exception('url [%s].' % url)
                             break
                     except urlfetch.DownloadError:
                         if response.status_code == 555:
                             response.status_code = 534
+                            default_log.exception('url [%s].' % url)                        
                         cnt += 1
                         #break
                     except Exception as e:
                         if response.status_code == 555:
                             response.status_code = 535
-                            default_log.warn('url [%s] failed [%s].' % (url, str(e)))
+                            default_log.exception('url [%s].' % url)
                         break
                     else:
                         break

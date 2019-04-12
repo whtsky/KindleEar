@@ -227,7 +227,7 @@ def build_exth(metadata, prefer_author_sort=False, is_periodical=False,
         exth.write(pack(b'>II', EXTH_CODES['zero-margin'], 12))
         exth.write(b'true')
         exth.write(pack(b'>II', EXTH_CODES['primary-writing-mode'], 21))
-        exth.write(b'horizontal-lr')
+        exth.write(b'horizontal-rl')
         exth.write(pack(b'>II', EXTH_CODES['fixed-layout'], 12))
         exth.write(b'true')
         exth.write(pack(b'>II', EXTH_CODES['orientation-lock'], 16))

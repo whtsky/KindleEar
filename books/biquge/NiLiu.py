@@ -9,6 +9,6 @@ def getBook():
 
 
 class NiLiu(xxbiqugebase):
-    title = u'[小说]逆流纯真年代'
-    description = u'人间武库'
-    feeds = 'https://www.xxbiquge.com/77_77294/'
+    title = u"[小说]逆流纯真年代"
+    description = u"人间武库"
+    feeds = "https://www.xxbiquge.com/77_77294/"

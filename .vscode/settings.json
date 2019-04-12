@@ -1,0 +1,19 @@
+{
+  "html.format.enable": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.pyc": true
+  },
+  "python.formatting.provider": "black",
+  "less.lint.hexColorLength": "warning",
+  "python.pythonPath": "D:\\Python27\\python.exe",
+  "files.associations": {
+    "*.html": "jinja-html"
+  }
+}

@@ -9,6 +9,6 @@ def getBook():
 
 
 class XiuZhen(xxbiqugebase):
-    title = u'[小说]修真聊天群'
-    description = u'圣骑士的传说'
-    feeds = 'https://www.xxbiquge.com/65_65306/'
+    title = u"[小说]修真聊天群"
+    description = u"圣骑士的传说"
+    feeds = "https://www.xxbiquge.com/65_65306/"

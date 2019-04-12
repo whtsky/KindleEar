@@ -9,6 +9,6 @@ def getBook():
 
 
 class JianLing(xxbiqugebase):
-    title = u'[小说]剑灵同居日记'
-    description = u'国王陛下'
-    feeds = 'http://www.xxbiquge.com/76_76570/'
+    title = u"[小说]剑灵同居日记"
+    description = u"国王陛下"
+    feeds = "http://www.xxbiquge.com/76_76570/"
