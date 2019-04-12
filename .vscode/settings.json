@@ -12,5 +12,8 @@
   },
   "python.formatting.provider": "black",
   "less.lint.hexColorLength": "warning",
-  "python.pythonPath": "/usr/local/opt/python@2/bin/python2.7"
+  "python.pythonPath": "D:\\Python27\\python.exe",
+  "files.associations": {
+    "*.html": "jinja-html"
+  }
 }
