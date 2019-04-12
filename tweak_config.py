@@ -3,6 +3,7 @@
 import os, sys, re, codecs, locale, shutil
 
 PAT_EMAIL = r"^SRC_EMAIL\s*=\s*[\"\']([\w@\.-]+)[\"\'](.*)"
+PAT_DOMAIN = r"^DOMAIN\s*=\s*(.+?)(\s*#.*)"
 
 
 def Main():
@@ -21,6 +22,10 @@ def Main():
         mt = re.match(PAT_EMAIL, line)
         if mt:
             slcfg[index] = 'SRC_EMAIL = "%s"' % os.environ["SRC_EMAIL"] + mt.group(2)
+            continue
+        mt = re.match(PAT_DOMAIN, line)
+        if mt:
+            slcfg[index] = 'DOMAIN = "%s"' % os.environ["DOMAIN"] + mt.group(2)
             continue
     with codecs.open(cfg_file, "w", "utf-8") as fcfg:
         fcfg.write("\n".join(slcfg))

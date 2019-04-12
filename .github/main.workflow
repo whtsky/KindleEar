@@ -23,7 +23,7 @@ action "GCP Authenticate" {
 
 action "Deploy A" {
   uses = "actions/gcloud/cli@1a017b23ef5762d20aeb3972079a7bce2c4a8bfe"
-  needs = ["GCP Authenticate", "update SRC_EMAIL", "Run msgfmt"]
+  needs = ["GCP Authenticate", "tweak_config", "Run msgfmt"]
   args = "app deploy --version=1 ./app.yaml ./module-worker.yaml"
   secrets = ["CLOUDSDK_CORE_PROJECT"]
 }
@@ -41,8 +41,8 @@ action "Show Config" {
   args = "config list"
 }
 
-action "update SRC_EMAIL" {
+action "tweak_config" {
   uses = "docker://python:2.7"
-  secrets = ["SRC_EMAIL"]
+  secrets = ["SRC_EMAIL", "DOMAIN"]
   args = "python tweak_config.py"
 }
