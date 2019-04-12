@@ -85,7 +85,6 @@ class Worker(BaseHandler):
 
         if not book4meta:
             return "No have book to push.<br />"
-
         # 创建 OEB
         # global log
         opts = getOpts(user.device, bookmode)
