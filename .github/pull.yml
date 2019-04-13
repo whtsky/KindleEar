@@ -1,8 +1,10 @@
 version: "1"
 rules:
-  - base: master
+  - base: upstream_master
     upstream: cdhigh:master
     mergeMethod: hardreset
+  - base: master
+    upstream: cdhigh:master
   - base: dev
     upstream: master
 label: ":arrow_heading_down: pull"
