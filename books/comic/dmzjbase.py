@@ -156,22 +156,4 @@ class DMZJBaseBook(BaseComicBook):
 
     # 获取漫画图片列表
     def getImgList(self, url):
-        decoder = AutoDecoder(isfeed=False)
-        opener = URLOpener(addreferer=False, timeout=60)
-
-        result = opener.open(url)
-        if result.status_code != 200:
-            self.log.warn("fetch comic page failed: %s" % result.status_code)
-            return []
-
-        content = self.AutoDecodeContent(
-            result.content, decoder, self.feed_encoding, opener.realurl, result.headers
-        )
-
-        reader_data_match = re.search("mReader\.initData\(({.+})", content)
-        if reader_data_match:
-            reader_data = reader_data_match.group(1)
-            return json.loads(reader_data)["page_url"]
-        self.log.info("Failed to get images from content, try api")
-
         return self.get_image_list_from_api(url)
