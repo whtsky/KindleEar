@@ -5,6 +5,7 @@ rules:
     mergeMethod: hardreset
   - base: master
     upstream: cdhigh:master
+    mergeMethod: hardreset
   - base: dev
     upstream: master
 label: ":arrow_heading_down: pull"
