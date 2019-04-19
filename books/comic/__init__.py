@@ -8,10 +8,12 @@ from .seven33sobase import Seven33SoBaseBook
 from .tohomhbase import ToHoMHBaseBook
 from .dmzjbase import DMZJBaseBook
 from .gufengbase import GuFengBaseBook
+from .twoanimxbase import TwoAniMxBaseBook
 
 ComicBaseClasses = [
     CartoonMadBaseBook,
     TencentBaseBook,
+    TwoAniMxBaseBook,
     ManHuaGuiBaseBook,
     ManHuaRenBaseBook,
     Seven33SoBaseBook,
