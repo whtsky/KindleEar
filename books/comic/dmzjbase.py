@@ -35,18 +35,22 @@ class DMZJBaseBook(BaseComicBook):
                 )
                 return []
 
-        data = json.loads(json_result.content)
-        chapter_datas = []
-        for chapters_data in data["chapters"]:
-            chapter_datas += chapters_data["data"]
-        chapter_datas.sort(key=lambda d: d["chapter_id"])
-        chapters = []
-        for chapter in chapter_datas:
-            chapter_url = "https://m.dmzj.com/view/{comic_id}/{chapter_id}.html".format(
-                chapter_id=chapter["chapter_id"], comic_id=comic_id
-            )
-            chapters.append((chapter["chapter_title"], chapter_url))
-        return chapters
+        try:
+            data = json.loads(json_result.content)
+            chapter_datas = []
+            for chapters_data in data["chapters"]:
+                chapter_datas += chapters_data["data"]
+            chapter_datas.sort(key=lambda d: d["chapter_id"])
+            chapters = []
+            for chapter in chapter_datas:
+                chapter_url = "https://m.dmzj.com/view/{comic_id}/{chapter_id}.html".format(
+                    chapter_id=chapter["chapter_id"], comic_id=comic_id
+                )
+                chapters.append((chapter["chapter_title"], chapter_url))
+            return chapters
+        except:
+            self.log.exception(u"Can't parse dmzj api result: %s" % json_result.content)
+            return []
 
     def get_chapter_list_from_mobile_url(self, url):
         decoder = AutoDecoder(isfeed=False)
@@ -151,8 +155,12 @@ class DMZJBaseBook(BaseComicBook):
                 self.log.warn("fetch v2 api json failed: %s" % result.status_code)
                 return []
 
-        data = json.loads(result.content)
-        return data["page_url"]
+        try:
+            data = json.loads(result.content)
+            return data["page_url"]
+        except:
+            self.log.exception(u"Can't parse dmzj api result: %s" % result.content)
+            return []
 
     # 获取漫画图片列表
     def getImgList(self, url):
