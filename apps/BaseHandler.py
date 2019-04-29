@@ -116,7 +116,7 @@ class BaseHandler:
         mail.add_attachment(attachment)
         response = sg.client.mail.send.post(request_body=mail.get())
         if response.status_code == 202:
-            default_log.warn("Sendgrid succeed send mail : %s", file_name)
+            default_log.info("Sendgrid succeed send mail : %s", file_name)
         else:
             default_log.warn(
                 "Sendgrid send mail failed, error code: %s", str(response.status_code)
