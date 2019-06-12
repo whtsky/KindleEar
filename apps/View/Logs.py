@@ -119,7 +119,7 @@ class RemoveLogs(BaseHandler):
         # 清理过期的已推送期号
         query = LastDelivered.all()
         query.filter(
-            "datetime < ", datetime.datetime.utcnow() - datetime.timedelta(days=90)
+            "datetime < ", datetime.datetime.utcnow() - datetime.timedelta(days=365)
         )
         logs = query.fetch(1000)
         db.delete(logs)
