@@ -75,5 +75,5 @@ class ManHuaDuiBaseBook(BaseComicBook):
         if not img_path_match:
             self.log.warn("Can't find chapterPath from {}".format(url))
             return []
-        img_base_path = urljoin("https://res.333dm.com", img_path_match.group(0))
+        img_base_path = urljoin("https://res.333dm.com", img_path_match.group(1))
         return [urljoin(img_base_path, x) for x in images]

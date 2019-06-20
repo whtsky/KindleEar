@@ -5,22 +5,27 @@ KindleEar电子书基类，每本投递到kindle的书籍抽象为这里的一�
 可以继承BaseFeedBook类而实现自己的定制书籍。
 cdhigh <https://github.com/cdhigh>
 """
-import os, re, urllib, urlparse, imghdr, datetime, hashlib
+import datetime
+import hashlib
+import imghdr
+import os
+import re
+import urllib
+import urlparse
+from StringIO import StringIO
 from urllib2 import *
 
-from bs4 import BeautifulSoup, Comment, NavigableString, CData, Tag
-from lib import feedparser
-from lib.readability import readability
-from lib.image import chop_image
-from lib.urlopener import URLOpener
-from lib.autodecoder import AutoDecoder
-from apps.dbModels import LastDelivered
-
-from calibre.utils.img import rescale_image, mobify_image
+from bs4 import BeautifulSoup, CData, Comment, NavigableString, Tag
 from PIL import Image
-from StringIO import StringIO
 
+from apps.dbModels import LastDelivered
+from calibre.utils.img import mobify_image, rescale_image
 from config import *
+from lib import feedparser
+from lib.autodecoder import AutoDecoder
+from lib.image import chop_image
+from lib.readability import readability
+from lib.urlopener import URLOpener
 
 htmlTemplate = """
 <html>
@@ -1710,7 +1715,9 @@ class BaseComicBook(BaseFeedBook):
             content = result.content
             if not content:
                 raise Exception(
-                    "Failed to download %s: code %s" % url, result.status_code
+                    "Failed to download {}: result {}, code {}".format(
+                        url, result, result.status_code
+                    )
                 )
 
             content = self.adjustImgContent(content)
