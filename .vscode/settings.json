@@ -12,8 +12,11 @@
   },
   "python.formatting.provider": "black",
   "less.lint.hexColorLength": "warning",
-  "python.pythonPath": "D:\\Python27\\python.exe",
+  "python.pythonPath": "/usr/local/bin/python",
   "files.associations": {
     "*.html": "jinja-html"
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
   }
 }
