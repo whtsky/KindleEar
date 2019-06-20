@@ -22,7 +22,11 @@
 # https://github.com/ciromattia/kcc/blob/master/kindlecomicconverter/image.py
 
 
-from StringIO import StringIO
+try:
+    from cStringIo import StringIO
+except ImportError:
+    from StringIO import StringIO
+
 from PIL import Image, ImageChops, ImageFilter, ImageOps
 
 

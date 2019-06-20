@@ -5,20 +5,25 @@
 __license__ = "MIT"
 
 import cProfile
-from StringIO import StringIO
+import os
+import pstats
+import random
+import sys
+import tempfile
+import time
+import traceback
 from HTMLParser import HTMLParser
+
 import bs4
 from bs4 import BeautifulSoup, __version__
 from bs4.builder import builder_registry
 
-import os
-import pstats
-import random
-import tempfile
-import time
-import traceback
-import sys
-import cProfile
+try:
+    from cStringIo import StringIO
+except ImportError:
+    from StringIO import StringIO
+
+
 
 def diagnose(data):
     """Diagnostic suite for isolating common problems."""

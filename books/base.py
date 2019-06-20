@@ -12,7 +12,6 @@ import os
 import re
 import urllib
 import urlparse
-from StringIO import StringIO
 from urllib2 import *
 
 from bs4 import BeautifulSoup, CData, Comment, NavigableString, Tag
@@ -26,6 +25,12 @@ from lib.autodecoder import AutoDecoder
 from lib.image import chop_image
 from lib.readability import readability
 from lib.urlopener import URLOpener
+
+try:
+    from cStringIo import StringIO
+except ImportError:
+    from StringIO import StringIO
+
 
 htmlTemplate = """
 <html>
@@ -1913,7 +1918,6 @@ class BaseComicBook(BaseFeedBook):
                 return data
             else:
                 # 如果图被拆分，则返回一个图像列表，否则返回None
-                raw_images = self.SplitWideImage(data) or [data]
                 splitedImages = self.SplitWideImage(data)
                 if splitedImages:
                     images = []

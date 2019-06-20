@@ -6,10 +6,16 @@ __copyright__ = '2010, Kovid Goyal <kovid@kovidgoyal.net>'
 __docformat__ = 'restructuredtext en'
 
 import os
+
 from PIL import Image
 
 from calibre.utils.imghdr import what
-from StringIO import StringIO
+
+try:
+    from cStringIo import StringIO
+except ImportError:
+    from StringIO import StringIO
+
 
 def identify_data(data):
     '''

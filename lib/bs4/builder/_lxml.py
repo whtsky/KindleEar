@@ -5,26 +5,21 @@ __all__ = [
     'LXMLTreeBuilder',
     ]
 
-from io import BytesIO
-from StringIO import StringIO
 import collections
-from lxml import etree
-from bs4.element import (
-    Comment,
-    Doctype,
-    NamespacedAttribute,
-    ProcessingInstruction,
-    XMLProcessingInstruction,
-)
-from bs4.builder import (
-    FAST,
-    HTML,
-    HTMLTreeBuilder,
-    PERMISSIVE,
-    ParserRejectedMarkup,
-    TreeBuilder,
-    XML)
+from io import BytesIO
+
+from bs4.builder import (FAST, HTML, PERMISSIVE, XML, HTMLTreeBuilder,
+                         ParserRejectedMarkup, TreeBuilder)
 from bs4.dammit import EncodingDetector
+from bs4.element import (Comment, Doctype, NamespacedAttribute,
+                         ProcessingInstruction, XMLProcessingInstruction)
+from lxml import etree
+
+try:
+    from cStringIo import StringIO
+except ImportError:
+    from StringIO import StringIO
+
 
 LXML = 'lxml'
 
