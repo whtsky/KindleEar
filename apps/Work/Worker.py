@@ -7,23 +7,27 @@
 # Contributors:
 # rexdf <https://github.com/rexdf>
 
-import datetime, time, imghdr
-import web
-import StringIO
-from PIL import Image
+import datetime
+import imghdr
 import random
-
+import StringIO
+import time
 from collections import OrderedDict
+
+from PIL import Image
+
+import web
 from apps.BaseHandler import BaseHandler
 from apps.dbModels import *
 from apps.utils import InsertToc, local_time
-from lib.makeoeb import *
-from calibre.ebooks.conversion.mobioutput import MOBIOutput
-from calibre.ebooks.conversion.epuboutput import EPUBOutput
-from calibre.utils.bytestringio import byteStringIO
 from books import BookClass
-from books.base import BaseFeedBook, BaseComicBook
+from books.base import BaseComicBook, BaseFeedBook
 from books.comic import ComicBaseClasses, comic_domains
+from calibre.ebooks.conversion.epuboutput import EPUBOutput
+from calibre.ebooks.conversion.mobioutput import MOBIOutput
+from calibre.utils.bytestringio import byteStringIO
+from lib.makeoeb import *
+
 
 # 实际下载文章和生成电子书并且发送邮件
 class Worker(BaseHandler):
@@ -442,7 +446,19 @@ class Worker(BaseHandler):
         sections = OrderedDict()
         toc_thumbnails = {}  # map img-url -> manifest-href
 
-        chapters = book.ParseFeedUrls()
+        try:
+            chapters = book.ParseFeedUrls()
+        except:
+            main.log.exception(u"Failed to get chapters for book {}".format(book.title))
+            self.deliverlog(
+                username,
+                str(user.kindle_email),
+                book.title,
+                0,
+                status="500",
+                tz=user.timezone,
+            )
+            return
         if not chapters:
             self.deliverlog(
                 username,
