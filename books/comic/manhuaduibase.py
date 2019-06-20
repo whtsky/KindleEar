@@ -69,7 +69,9 @@ class ManHuaDuiBaseBook(BaseComicBook):
         if not images_match:
             self.log.warn("Can't find chapterImages from {}".format(url))
             return []
-        images = json.loads(decrypt_manhuadui(images_match.group(1)))
+        images_raw = decrypt_manhuadui(images_match.group(1))
+        self.log.info("Got image list: {}".format(images_raw))
+        images = json.loads(images_raw)
 
         img_path_match = re.search(r'chapterPath = "(.+?)"', content)
         if not img_path_match:
