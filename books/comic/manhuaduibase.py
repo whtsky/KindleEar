@@ -17,7 +17,7 @@ def decrypt_manhuadui(raw):
     https://www.manhuadui.com/js/decrypt20180904.js
     """
     obj = AES.new("123456781234567G", AES.MODE_CBC, "ABCDEF1G34123412")
-    return obj.decrypt(base64.b64decode(raw)).strip().decode("utf-8")
+    return obj.decrypt(base64.b64decode(raw)).strip()
 
 
 class ManHuaDuiBaseBook(BaseComicBook):
@@ -71,7 +71,7 @@ class ManHuaDuiBaseBook(BaseComicBook):
         if not images_match:
             self.log.warn("Can't find chapterImages from {}".format(url))
             return []
-        images_raw = decrypt_manhuadui(images_match.group(1))
+        images_raw = re.search(r'\[.+\]', decrypt_manhuadui(images_match.group(1))).group(0)
         self.log.info("Got image list: {}".format(images_raw))
         images = json.loads(images_raw)
 
