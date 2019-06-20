@@ -16,12 +16,12 @@ def decrypt_manhuadui(raw):
     """
     https://www.manhuadui.com/js/decrypt20180904.js
     """
-    obj = AES.new('123456781234567G', AES.MODE_CBC, 'ABCDEF1G34123412')
-    return obj.decrypt(base64.b64decode(raw)).strip()
+    obj = AES.new("123456781234567G", AES.MODE_CBC, "ABCDEF1G34123412")
+    return obj.decrypt(base64.b64decode(raw)).strip().decode("utf-8")
 
 
 class ManHuaDuiBaseBook(BaseComicBook):
-    accept_domains = ("https://www.manhuadui.com/", )
+    accept_domains = ("https://www.manhuadui.com/",)
     host = "https://www.manhuadui.com/"
 
     def getChapterList(self, url):
@@ -46,7 +46,9 @@ class ManHuaDuiBaseBook(BaseComicBook):
         ul_soup = soup.find("ul", {"id": "chapter-list-1"})
 
         for link in ul_soup.find_all("a"):
-            chapterList.append((link.get("title"), urljoin(self.host, link.get("href"))))
+            chapterList.append(
+                (link.get("title"), urljoin(self.host, link.get("href")))
+            )
         return chapterList
 
     def getImgList(self, url):
