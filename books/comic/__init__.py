@@ -1,19 +1,21 @@
 import itertools
 
 from .cartoonmadbase import CartoonMadBaseBook
-from .tencentbase import TencentBaseBook
+from .dmzjbase import DMZJBaseBook
+from .gufengbase import GuFengBaseBook
+from .manhuaduibase import ManHuaDuiBaseBook
 from .manhuaguibase import ManHuaGuiBaseBook
 from .manhuarenbase import ManHuaRenBaseBook
 from .seven33sobase import Seven33SoBaseBook
+from .tencentbase import TencentBaseBook
 from .tohomhbase import ToHoMHBaseBook
-from .dmzjbase import DMZJBaseBook
-from .gufengbase import GuFengBaseBook
 from .twoanimxbase import TwoAniMxBaseBook
 
 ComicBaseClasses = [
     CartoonMadBaseBook,
     TencentBaseBook,
     TwoAniMxBaseBook,
+    ManHuaDuiBaseBook,
     ManHuaGuiBaseBook,
     ManHuaRenBaseBook,
     Seven33SoBaseBook,
