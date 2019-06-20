@@ -1,13 +1,13 @@
-#!/usr/bin/env python3
 # encoding: utf-8
 import base64
+import json
 import re
 from urlparse import urljoin
 
+from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
 
 from books.base import BaseComicBook
-from bs4 import BeautifulSoup
 from lib.autodecoder import AutoDecoder
 from lib.urlopener import URLOpener
 
@@ -17,7 +17,7 @@ def decrypt_manhuadui(raw):
     https://www.manhuadui.com/js/decrypt20180904.js
     """
     obj = AES.new('123456781234567G', AES.MODE_CBC, 'ABCDEF1G34123412')
-    return obj.decrypt(base64.b64decode(raw))
+    return obj.decrypt(base64.b64decode(raw)).strip()
 
 
 class ManHuaDuiBaseBook(BaseComicBook):
@@ -69,7 +69,7 @@ class ManHuaDuiBaseBook(BaseComicBook):
         if not images_match:
             self.log.warn("Can't find chapterImages from {}".format(url))
             return []
-        images = re.findall('"(.+?)"', decrypt_manhuadui(images_match.group(1)))
+        images = json.loads(decrypt_manhuadui(images_match.group(1)))
 
         img_path_match = re.search(r'chapterPath = "(.+?)"', content)
         if not img_path_match:
