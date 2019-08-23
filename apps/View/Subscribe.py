@@ -24,7 +24,6 @@ from books.base import BaseComicBook
 from books.comic import ComicBaseClasses
 from config import *
 
-
 class MySubscription(BaseHandler):
     __url__ = "/my"
     # 管理我的订阅和杂志列表
