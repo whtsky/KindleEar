@@ -1,0 +1,35 @@
+on: push
+name: Deploy To GAE
+jobs:
+  devBranchOnly:
+    name: dev branch only
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: dev branch only
+      uses: actions/bin/filter@b2bea07
+      with:
+        args: branch dev
+    - name: Run msgfmt
+      uses: whtsky/msgfmt-action@master
+    - name: tweak_config
+      uses: docker://python:2.7
+      env:
+        DOMAIN: ${{ secrets.DOMAIN }}
+        SRC_EMAIL: ${{ secrets.SRC_EMAIL }}
+      with:
+        args: python tweak_config.py
+    - name: GCP Authenticate
+      uses: actions/gcloud/auth@1a017b23ef5762d20aeb3972079a7bce2c4a8bfe
+      env:
+        GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+    - name: Show Config
+      uses: actions/gcloud/cli@1a017b23ef5762d20aeb3972079a7bce2c4a8bfe
+      with:
+        args: config list
+    - name: Deploy A
+      uses: actions/gcloud/cli@1a017b23ef5762d20aeb3972079a7bce2c4a8bfe
+      env:
+        CLOUDSDK_CORE_PROJECT: ${{ secrets.CLOUDSDK_CORE_PROJECT }}
+      with:
+        args: app deploy --version=1 *.yaml
