@@ -21,8 +21,40 @@
 .logs .status.error {
     background-color: darkorange;
 }
+.log__status {
+    white-space: pre;
+}
 </style>
 {% endblock -%}
+{% block content -%}
+{% if mylogs -%}
+<p><em class="required">*</em> {{_("Only display last 30 logs")}}</p>
+<table class="pure-table pure-table-striped logs_list">
+    <thead><tr>
+        <th class="center">{{_("Time")}}</th>
+        <th class="center">{{_("Title")}}</th>
+        <th class="center">{{_("Size")}}</th>
+        <th class="center">{{_("To")}}</th>
+        <th class="center">{{_("Status")}}</th>
+    </tr></thead>
+    <tbody>
+    {% for log in mylogs -%}
+    <tr>
+        <td class="center">{{ log.time }}</td>
+        <td class="logbook">
+        {% if log.book|length>20 -%}
+        {{log.book[:20]}}...<span>{{log.book}}</span>
+        {% else %}{{log.book}}{% endif %}</td>
+        <td class="center">{%if log.size %} {{ log.size|filesizeformat }} {% else %} 0 {% endif %}</td>
+        <td class="center">{{ log.to }}</td>
+        <td class="center log__status">{% if log.status %}{{ log.status }}{% else %}ok{% endif %}</td>
+    </tr>
+    {% endfor -%}
+    </tbody>
+</table>
+{% else -%}
+<p>{{_("Has no log")}}</p>
+{% endif -%}
 
 {% block content -%}
 <div class="main">
