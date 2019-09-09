@@ -87,10 +87,10 @@ class AdvArchive(BaseHandler):
 
         return self.render(
             "advarchive.html",
-            "Share",
+            "Archive",
             current="advsetting",
             user=user,
-            advcurr="share",
+            advcurr="archive",
             savetoevernote=SAVE_TO_EVERNOTE,
             savetowiz=SAVE_TO_WIZ,
             savetopocket=SAVE_TO_POCKET,
@@ -360,9 +360,9 @@ class AdvUploadCoverImageAjax(BaseHandler):
 
     def POST(self):
         ret = "ok"
+        user = self.getcurrentuser(forAjax=True)
         try:
             x = web.input(coverfile={})
-            user = self.getcurrentuser()
             file_ = x["coverfile"].file
             if user and file_:
                 # 将图像转换为JPEG格式，同时限制分辨率不超过1024
@@ -391,9 +391,9 @@ class AdvDeleteCoverImageAjax(BaseHandler):
 
     def POST(self):
         ret = {"status": "ok"}
+        user = self.getcurrentuser(forAjax=True)
         try:
             confirmKey = web.input().get("action")
-            user = self.getcurrentuser()
             if user and confirmKey == "delete":
                 user.cover = None
                 user.put()
@@ -486,7 +486,7 @@ class VerifyAjax(BaseHandler):
             respDict["status"] = _("Request type[%s] unsupported") % verType
             return json.dumps(respDict)
 
-        user = self.getcurrentuser()
+        user = self.getcurrentuser(forAjax=True)
 
         username = web.input().get("username", "")
         password = web.input().get("password", "")

@@ -19,10 +19,13 @@ from google.appengine.api import memcache
 from apps.utils import etagged
 from apps.BaseHandler import BaseHandler
 from apps.dbModels import *
+from lib.urlopener import URLOpener
 from books import BookClasses, BookClass
 from books.base import BaseComicBook
 from books.comic import ComicBaseClasses
 from config import *
+from apps.View.Library import SharedLibraryMgrkindleearAppspotCom
+
 
 class MySubscription(BaseHandler):
     __url__ = "/my"
@@ -30,6 +33,8 @@ class MySubscription(BaseHandler):
     @etagged()
     def GET(self, tips=None):
         user = self.getcurrentuser()
+        title_to_add = web.input().get("title_to_add")
+        url_to_add = web.input().get("url_to_add")
         myfeeds = user.ownfeeds.feeds if user.ownfeeds else None
         books = list(Book.all().filter("builtin = ", True))
         # 简单排个序，为什么不用数据库直接排序是因为Datastore数据库需要建立索引才能排序
@@ -44,7 +49,9 @@ class MySubscription(BaseHandler):
             myfeeds=myfeeds,
             comic_base_classes=ComicBaseClasses,
             tips=tips,
-            subscribe_url=urlparse.urljoin(DOMAIN, self.__url__)
+            subscribe_url=urlparse.urljoin(DOMAIN, self.__url__),
+            title_to_add=title_to_add,
+            url_to_add=url_to_add,
         )
 
     def POST(self):  # 添加自定义RSS
@@ -57,7 +64,14 @@ class MySubscription(BaseHandler):
 
         if not url.lower().startswith("http"):  # http and https
             url = "http://" + url
+
         assert user.ownfeeds
+
+        # 判断是否重复
+        ownUrls = [item.url for item in user.ownfeeds.feeds]
+        if url in ownUrls:
+            return self.GET(_("Duplicated subscription!"))
+
         Feed(
             title=title,
             url=url,
@@ -74,8 +88,8 @@ class FeedsAjax(BaseHandler):
     __url__ = "/feeds/(.*)"
 
     def POST(self, mgrType):
+        user = self.getcurrentuser(forAjax=True)
         web.header("Content-Type", "application/json")
-        user = self.getcurrentuser()
 
         if mgrType.lower() == "delete":
             feedid = web.input().get("feedid")
@@ -94,6 +108,10 @@ class FeedsAjax(BaseHandler):
             title = web.input().get("title")
             url = web.input().get("url")
             isfulltext = bool(web.input().get("fulltext", "").lower() == "true")
+            fromSharedLibrary = bool(
+                web.input().get("fromsharedlibrary", "").lower() == "true"
+            )
+
             respDict = {
                 "status": "ok",
                 "title": title,
@@ -109,6 +127,12 @@ class FeedsAjax(BaseHandler):
                 url = "http://" + url
                 respDict["url"] = url
 
+            # 判断是否重复
+            ownUrls = [item.url for item in user.ownfeeds.feeds]
+            if url in ownUrls:
+                respDict["status"] = _("Duplicated subscription!")
+                return json.dumps(respDict)
+
             fd = Feed(
                 title=title,
                 url=url,
@@ -119,9 +143,22 @@ class FeedsAjax(BaseHandler):
             fd.put()
             respDict["feedid"] = fd.key().id()
             memcache.delete("%d.feedscount" % user.ownfeeds.key().id())
+
+            # 如果是从共享库中订阅的，则通知共享服务器，提供订阅数量信息，以便排序
+            if fromSharedLibrary:
+                self.SendNewSubscription(title, url)
+
             return json.dumps(respDict)
         else:
             return json.dumps({"status": "unknown command: %s" % mgrType})
+
+    def SendNewSubscription(self, title, url):
+        opener = URLOpener()
+        path = SharedLibraryMgrkindleearAppspotCom.__url__.split("/")
+        path[-1] = "subscribedfromshared"
+        srvUrl = urlparse.urljoin("http://kindleear.appspot.com/", "/".join(path))
+        data = {"title": title, "url": url}
+        result = opener.open(srvUrl, data)  # 只管杀不管埋，不用管能否成功了
 
 
 # 订阅/退订内置书籍的AJAX处理函数
@@ -130,7 +167,7 @@ class BooksAjax(BaseHandler):
 
     def POST(self, mgrType):
         web.header("Content-Type", "application/json")
-        user = self.getcurrentuser()
+        user = self.getcurrentuser(forAjax=True)
         id_ = web.input().get("id_")
         try:
             id_ = int(id_)
