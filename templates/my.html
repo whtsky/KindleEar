@@ -46,7 +46,7 @@
                 {% endfor -%}
             </div>
             <div class="summaryRow">
-                <a href="{{feed.url}}" target="_blank">
+                <a href="{{feed.url}}" target="_blank" title="{{feed.url | escape}}">
                     {% if feed.url|length>80 %}
                         {{feed.url[:80]}}...
                     {% else %}
@@ -84,7 +84,7 @@
                       <img alt="{{_('Separate')}}" src="static/separate.gif" border="0" />
                     {% endif -%}
                 </div>
-                <div class="summaryRow">
+                <div class="summaryRow" title="{{book.description | escape}}">
                     {% if book.description|length>80 %}
                         {{book.description[:80]}}...
                     {% else %}
@@ -122,7 +122,7 @@
                 <input type="checkbox" id="separate_{{book.key().id()}}" />
                 <img alt="{{ _('Separate') }}" src="static/separate.gif" border="0" onclick="toggleSeparate('{{book.key().id()}}');" />
             </div>
-            <div class="summaryRow">
+            <div class="summaryRow" title="{{book.description | escape}}">
                 {% if book.description|length>80 %}
                     {{book.description[:80]}}...
                 {% else %}
