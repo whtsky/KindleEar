@@ -6,7 +6,7 @@ __copyright__ = '2009, Kovid Goyal <kovid@kovidgoyal.net>'
 __docformat__ = 'restructuredtext en'
 
 
-import sys, os
+import sys, os, pkgutil
 
 from calibre import config_dir
 from polyglot.builtins import builtins
@@ -29,7 +29,7 @@ class PathResolver:
                 pass
             return False
 
-        self.default_path = ""
+        self.default_path = "resources"
 
         dev_path = os.environ.get('CALIBRE_DEVELOP_FROM', None)
         self.using_develop_from = False
@@ -86,8 +86,9 @@ _resolver = PathResolver()
 def get_path(path, data=False, allow_user_override=True):
     fpath = _resolver(path, allow_user_override=allow_user_override)
     if data:
-        with open(fpath, 'rb') as f:
-            return f.read()
+        #with open(fpath, 'rb') as f:
+        #    return f.read()
+        return pkgutil.get_data("calibre", path)
     return fpath
 
 
