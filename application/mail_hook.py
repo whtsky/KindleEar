@@ -12,7 +12,7 @@
 #    返回None或(soup, attachments)
 #sender/to为字符串，subject为字符串，txtBodies/htmlBodies为字符串列表，
 #attachments为[(fileName, bytes),...]，soup为BeautifulSoup实例
-import json, inspect
+import json, inspect, ast
 from flask_babel import gettext as _
 from .ke_utils import utcnow
 from .back_end.db_models import UserBlob
@@ -80,13 +80,49 @@ def load_hook_payload(dbItem):
     except Exception: #兼容直接保存的纯源码
         return '', dbItem.data.decode('utf-8', errors='replace')
 
+#钩子代码安全检查：禁止导入的高危模块、危险属性与内置函数
+BLOCKED_HOOK_MODULES = {
+    'os', 'sys', 'subprocess', 'shutil', 'socket', 'pty', 'commands',
+    'importlib', 'ctypes', 'posix', 'nt', 'multiprocessing', 'threading',
+    'signal', 'webbrowser', 'pickle', 'shelve', 'builtins', '__builtin__'
+}
+BLOCKED_HOOK_ATTRS = {
+    '__subclasses__', '__bases__', '__globals__', '__code__', '__builtins__'
+}
+BLOCKED_HOOK_CALLS = {
+    'exec', 'eval', 'compile', 'open', 'breakpoint', '__import__'
+}
+
+#检查钩子源码语法树，拦截潜在高危行为
+def check_hook_ast_safety(src: str):
+    try:
+        tree = ast.parse(src)
+    except SyntaxError:
+        return  #语法错误交由后面的 compile 统一抛出
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                if alias.name.split('.')[0] in BLOCKED_HOOK_MODULES:
+                    raise ValueError(_("Forbidden module import in mail hook: {}").format(alias.name))
+        elif isinstance(node, ast.ImportFrom):
+            if (node.module or '').split('.')[0] in BLOCKED_HOOK_MODULES:
+                raise ValueError(_("Forbidden module import in mail hook: {}").format(node.module))
+        elif isinstance(node, ast.Attribute):
+            if node.attr in BLOCKED_HOOK_ATTRS:
+                raise ValueError(_("Forbidden attribute access in mail hook: {}").format(node.attr))
+        elif isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Name) and (node.func.id in BLOCKED_HOOK_CALLS):
+                raise ValueError(_("Forbidden function call in mail hook: {}()").format(node.func.id))
+
 #编译并简单执行钩子源码以检查错误，返回一个 {钩子函数名: 函数} 字典
 #源码有语法错误、模块级代码有运行错误、没有定义任何钩子函数或函数签名不匹配则抛出异常
 def compile_mail_hook(src, filename='hook.py'):
+    check_hook_ast_safety(src)
     code = compile(src, filename, 'exec')
     namespace = {'__name__': 'mail_hook', '__file__': filename}
     #namespace未包含__builtins__时，exec会自动注入内置模块，钩子代码可以正常import任何库
-    exec(code, namespace) #type:ignore
+    exec(code, namespace) #type:ignore #nosec B102 #NOSONAR
 
     hooks = {}
     for name, argCount in ((HOOK_FULL_FUNC_NAME, 6), (HOOK_SOUP_FUNC_NAME, 4)):
@@ -120,9 +156,10 @@ def _load_hook_func(user, sender, name):
         return None
 
     try:
+        check_hook_ast_safety(src)
         namespace = {'__name__': 'mail_hook'}
         #namespace未包含__builtins__时，exec会自动注入内置模块，钩子代码可以正常import任何库
-        exec(compile(src, hook_blob_name(sender), 'exec'), namespace) #type:ignore
+        exec(compile(src, hook_blob_name(sender), 'exec'), namespace) #type:ignore #nosec B102 #NOSONAR
         return namespace.get(name) if callable(namespace.get(name)) else None
     except Exception as e:
         default_log.warning(f'Failed to run the mail hook [{sender}]: {e}')

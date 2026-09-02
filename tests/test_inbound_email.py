@@ -148,6 +148,21 @@ class MailHookTestCase(BaseTestCase):
         with self.assertRaises(Exception):
             compile_mail_hook('def hook_email_soup(sender, to):\n    return None\n')
 
+        #高危模块导入被拦截
+        with self.assertRaises(ValueError):
+            compile_mail_hook('import os\ndef hook_email(sender, to, subject, txtBodies, htmlBodies, attachments):\n    return None\n')
+
+        with self.assertRaises(ValueError):
+            compile_mail_hook('from subprocess import Popen\ndef hook_email(sender, to, subject, txtBodies, htmlBodies, attachments):\n    return None\n')
+
+        #高危函数调用被拦截
+        with self.assertRaises(ValueError):
+            compile_mail_hook('open("test.txt")\ndef hook_email(sender, to, subject, txtBodies, htmlBodies, attachments):\n    return None\n')
+
+        #沙箱逃逸属性访问被拦截
+        with self.assertRaises(ValueError):
+            compile_mail_hook('().__class__.__bases__[0].__subclasses__()\ndef hook_email(sender, to, subject, txtBodies, htmlBodies, attachments):\n    return None\n')
+
     #上传钩子文件的AJAX接口
     def test_upload_hook_api(self):
         from application.mail_hook import hook_blob_name
