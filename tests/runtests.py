@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-import os, shutil, sys, unittest, importlib, coverage, builtins, logging
+import os, re, shutil, sys, unittest, importlib, coverage, builtins, logging
 
 testDir = os.path.dirname(__file__)
 appDir = os.path.abspath(os.path.join(testDir, '..'))
@@ -9,9 +9,29 @@ sys.path.insert(0, os.path.join(appDir, 'application', 'lib'))
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
-builtins.__dict__['default_log'] = log
+
+#和main.py保持一致，使用calibre兼容的可调用日志类
+from application.lib import clogging
+logging.Logger.manager.setLoggerClass(clogging.CalibreLogger)
+calibre_log = logging.getLogger('calibre') #campat for calibre
+logging.Logger.manager.loggerClass = None #restore
+if not log.handlers:
+    log.addHandler(logging.StreamHandler(sys.stdout))
+if not calibre_log.handlers:
+    calibre_log.addHandler(log.handlers[0])
+builtins.__dict__['default_log'] = calibre_log
 builtins.__dict__['appDir'] = appDir
-builtins.__dict__['appVer'] = '3.0'
+
+#从main.py读取版本信息，注入和main.py一致的内置变量
+try:
+    with open(os.path.join(appDir, 'main.py'), encoding='utf-8') as f:
+        mainSrc = f.read()
+    appVer = re.search(r"__Version__\s*=\s*'([^']+)'", mainSrc).group(1)
+    appBuildDate = re.search(r"__BuildDate__\s*=\s*'([^']+)'", mainSrc).group(1)
+except Exception:
+    appVer, appBuildDate = '3.0', ''
+builtins.__dict__['appVer'] = appVer
+builtins.__dict__['appBuildDate'] = appBuildDate
 
 import config
 
@@ -71,7 +91,7 @@ if __name__ == '__main__':
     verbosity = 1 #Verbosity of output, 0 | 1 | 4
     failfast = 0 #Exit on first failure/error
     report = '' # '' | 'html' | 'console'
-    testonly = 'test_inbound_email' #module name, empty for testing all
+    testonly = '' #module name, empty for testing all
 
     os.environ['KE_TEST_VERBOSITY'] = str(verbosity)
     os.environ['KE_SLOW_TESTS'] = '1' #Run tests that may be slow

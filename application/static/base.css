@@ -1172,3 +1172,9 @@ dialog#h5-dialog::backdrop {
     min-height: 40px;
     margin: 25px;
 }
+/*对话框底部的所有按钮统一尺寸，与按钮使用的自定义class无关*/
+#h5-dialog-buttons button {
+    min-width: 150px;
+    min-height: 40px;
+    margin: 25px;
+}

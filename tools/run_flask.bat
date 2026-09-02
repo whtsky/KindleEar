@@ -1,6 +1,5 @@
 mode con: cols=160 lines=1000
-E:
-cd E:\Programer\Project\KindleEar
+cd /d "%~dp0.."
 set FLASK_APP=main.py
 set APP_DOMAIN=http://localhost:5000/
 set DATABASE_URL=sqlite:///database.db

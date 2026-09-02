@@ -67,7 +67,38 @@ URL 中 `:` 转义为 `__`（如 `/tts/custom__12`）。
 - 在线：dict_org（DICT 协议）、dict_cn、dict_cc、merriam_webster、oxford_learners
 - 本地文件（放 `DICTIONARY_DIR`）：stardict(.ifo)、mdict(.mdx/.mdd，含 lzo/salsa20/ripemd128 纯 Python 实现)、lingvo(ABBYY DSL)、babylon(.bgl)
 
-## 6. 其他扩展点
+## 6. 入站邮件钩子（mail_hook.py）
+
+用户针对**白名单条目**上传的 python 预处理钩子（类似 recipe 的用户可编程扩展点），收信时按发件人地址匹配调用。
+
+- **入口/上传**：Advanced → Inbound Mail 页面，每个白名单条目行上有 Hook 按钮 → 对话框上传 .py 文件（AJAX POST `/advanced/inboundmail/hook`，`AdvInboundMailHookPost` 先 `compile_mail_hook()` 编译+执行校验，无 `hook_*` 函数/语法错误/签名不符则报错不入库）。已上传钩子的条目按钮文字变为 Hooked，点击后的对话框里有 View 按钮，在新窗口查看钩子源码（`/advanced/inboundmail/hook/view/<mail>`，与查看 recipe 源码相同的 prism 高亮展示）。
+- **存储**：UserBlob 表，`name='hook:<白名单地址小写>'`，data 为 JSON `{'file': 文件名, 'src': 源码}`。无 schema 迁移；`erase_traces()` 随账号自动清理；删除白名单条目时同步删除钩子（adv.py AdvDel）。
+- **匹配**（`match_mail_hook`）：完整地址 > `@域名` > `*`（白名单 `*` 条目可挂全局钩子），大小写不敏感。
+- **调用点**（view/inbound_email.py `ReceiveMailImpl`）：
+  1. `run_mail_hook()` — 白名单校验、主题解码之后，存 InBox 之前；
+  2. `run_mail_content_hook()` — `CreateMailSoup()` 之后。
+- **容错**：钩子执行异常只记 default_log.warning，不影响投递流程；每次收信重新 exec（无缓存）。
+- **测试**：tests/test_inbound_email.py::MailHookTestCase。
+
+钩子文件为普通 python 文件，至少定义以下两个函数之一（可原地修改参数，也可返回新值元组）：
+
+```python
+def hook_email(sender, to, subject, txtBodies, htmlBodies, attachments):
+    #参数与 ReceiveMailImpl() 一致，在解析邮件之前调用
+    #sender: str；to: str 或 list（通道而异）；subject: str；txtBodies/htmlBodies: [str]；attachments: [(fileName, bytes)]
+    return subject, txtBodies, htmlBodies, attachments  #或返回 None
+
+def hook_email_soup(sender, to, soup, attachments):
+    #soup 为 BeautifulSoup 实例，在邮件正文转 soup 后调用
+    tag = soup.new_tag('p')
+    tag.string = 'appended by hook'
+    soup.body.append(tag)
+    return soup, attachments  #或返回 None
+```
+
+钩子里可直接使用 `default_log` 记录日志，也可 import bs4 等运行环境已有的库。
+
+## 7. 其他扩展点
 
 | 扩展点 | 位置 | 说明 |
 |---|---|---|

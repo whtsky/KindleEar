@@ -8,8 +8,25 @@ from unittest import mock
 VERBOSITY = int(os.environ.get('KE_TEST_VERBOSITY') or 1)
 SLOW_TESTS = bool(os.environ.get('KE_SLOW_TESTS'))
 
+#合并config.py配置信息到os.environ，如果对应环境变量存在，则不会覆盖，和main.py保持一致
+def set_env():
+    import config
+    cfgMap = {}
+    keys = ['APP_ID', 'APP_DOMAIN', 'SERVER_LOCATION', 'DATABASE_URL', 'TASK_QUEUE_SERVICE',
+        'TASK_QUEUE_BROKER_URL', 'KE_TEMP_DIR', 'DOWNLOAD_THREAD_NUM', 'ALLOW_SIGNUP',
+        'SECRET_KEY', 'DELIVERY_KEY', 'ADMIN_NAME', 'POCKET_CONSUMER_KEY', 'HIDE_MAIL_TO_LOCAL',
+        'LOG_LEVEL', 'EBOOK_SAVE_DIR', 'DICTIONARY_DIR', 'DEMO_MODE']
+    for key in keys:
+        cfgMap[key] = os.getenv(key) if key in os.environ else getattr(config, key)
+        if (key == 'APP_DOMAIN') and not cfgMap[key].startswith('http'):
+            cfgMap[key] = 'https://' + cfgMap[key]
+        os.environ[key] = cfgMap[key]
+    return cfgMap
+
+cfgMap = set_env()
+
 from application import init_app
-app = init_app(__name__, debug=True)
+app = init_app(__name__, cfgMap, set_env, debug=True)
 celery_app = app.extensions.get("celery", None)
 
 from application.back_end.db_models import *

@@ -22,7 +22,7 @@ flask run --debug
 
 ## 2. 测试
 
-- 入口 `tests/runtests.py`（unittest）：`python tests/runtests.py`，支持 coverage、failfast、`KE_SLOW_TESTS=1` 慢速用例、按模块名过滤。⚠ 文件尾部当前硬编码 `testonly='test_inbound_email'`（只会跑该模块，跑全量需先清掉）。
+- 入口 `tests/runtests.py`（unittest）：`python tests/runtests.py`，支持 coverage、failfast、`KE_SLOW_TESTS=1` 慢速用例、按模块名过滤。文件尾部 `testonly=''` 默认跑全量，可填模块名只跑单个模块。Windows 本机需设置环境变量（参考 tools/run_flask.bat）：`DATABASE_URL=sqlite:///database.db KE_TEMP_DIR=... EBOOK_SAVE_DIR=...`。各测试模块在 setUp 中清理自己产生的数据，可对同一个 database.db 重复运行。
 - BaseTestCase（tests/test_base.py）自动建 app/表/test_client，可选自动登录。
 - 模块对应：test_login/setting/admin/subscribe/adv/logs/inbound_email/share(当前排除)/library_offical。
 - datastore 相关在 tests/tools/：`run_datastore_emulator.bat`（gcloud 模拟器）+ test_datastore.py / test_nosql.py；test_calibre2.py 本地生成样书。
@@ -69,7 +69,7 @@ python tools/trim_recipes.py en zh es        # 按语言裁剪
 6. **发送间隔 10s**：send_to_kindle 有防 Kindle 垃圾机制的 sleep，测试时注意。
 7. **GAE 差异**：代码中条件使用 google.appengine 的地方不要无条件 import；二进制不可用（mp3 合并自动回退 pymp3cat.py）。
 8. **/worker、/url2book 是任务回调路由**（key 校验），不是普通页面，GAE 上被 dispatch 到 worker 服务。
-9. **runtests.py 尾部 testonly 硬编码**（见上）。
+
 10. **Windows 环境**：本仓库工作区约定使用 PowerShell（见 AGENTS.md）；tools 下有 .bat 脚本。
 
 ## 7. 版本发布 / CI

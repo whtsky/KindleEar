@@ -26,6 +26,7 @@
 | `__init__.py` | Flask app 工厂 `init_app()`：Babel、任务队列、DB 钩子、蓝图注册。 |
 | `routes.py` | 路由注册中心：定义 bpHome，集中注册 17 个蓝图。 |
 | `base_handler.py` | `login_required` / `get_login_user` / `save_delivery_log` 公共设施。 |
+| `mail_hook.py` | 入站邮件预处理钩子：用户针对白名单条目上传 python 钩子文件（存 UserBlob，name=`hook:<地址>`），收信时按发件人匹配调用 `hook_email()`（完整签名，暂存收件箱前）/ `hook_email_soup()`（soup 签名，CreateMailSoup 后）。上传时 `compile_mail_hook()` 编译校验（视图层 adv.py 调用）。详见 extensibility.md。 |
 | `ke_utils.py` | 通用工具箱：`safe_eval`（执行用户 recipe 沙箱）、类型转换（str_to_int/float/bool）、时间（tz_now/utcnow/time_str）、脱敏（hide_email/hide_website）、`url_validator`、`sanitize_filename`、`xml_escape/unescape`、`compare_version`、`filesizeformat`、`get_directory_size`、`extractHyperLink`、`PasswordManager`（加盐 sha256×1000，兼容旧 md5 迁移）、`ke_encrypt/ke_decrypt`（RC4 风格可逆加密，SMTP 密码等用）。 |
 
 ### back_end/（适配层）⚠
@@ -45,10 +46,10 @@
 | 文件 | 一句话 |
 |---|---|
 | `admin.py` | 账号管理（增删改、有效期、代配邮件服务）。 |
-| `adv.py` | 高级设置大杂烩：现在推送、入站邮件白名单、归档分享（Evernote/Wiz/Pocket/Instapaper/wallabag）、OPML 导入导出、封面上传（PIL 缩放 832x1280 存 UserBlob）、自定义 CSS、词典、代理、calibre 参数、`/fwd` 通用转发代理、`/dbimage`、Pocket OAuth。 |
+| `adv.py` | 高级设置大杂烩：现在推送、入站邮件白名单+钩子文件上传（AJAX 编译校验，`/advanced/inboundmail/hook`）、归档分享（Evernote/Wiz/Pocket/Instapaper/wallabag）、OPML 导入导出、封面上传（PIL 缩放 832x1280 存 UserBlob）、自定义 CSS、词典、代理、calibre 参数、`/fwd` 通用转发代理、`/dbimage`、Pocket OAuth。 |
 | `deliver.py` | `/deliver` 调度入口：cron 到点判定（书级 send_times 优先于用户级）、`queueOneBook()` 按合并/独立策略建任务。 |
 | `extension.py` | 浏览器扩展 API（去 JS 抓页、JSON 规则正文提取）。 |
-| `inbound_email.py` | 入站邮件三通道（GAE `/_ah/mail`、postfix `/mail`、mailglove）→ 白名单反垃圾 → 存 InBox → 指令解析（trigger 投递 / convert 附件转 epub / `!links` `!article` `!lang=`）→ 建 url2book 任务或正文转书；`/webmail/*` 网页收件箱。 |
+| `inbound_email.py` | 入站邮件三通道（GAE `/_ah/mail`、postfix `/mail`、mailglove）→ 白名单反垃圾 → 发件人钩子预处理（mail_hook.run_mail_hook）→ 存 InBox → 指令解析（trigger 投递 / convert 附件转 epub / `!links` `!article` `!lang=`）→ 钩子处理 soup（mail_hook.run_mail_content_hook）→ 建 url2book 任务或正文转书；`/webmail/*` 网页收件箱。 |
 | `library.py` | 共享订阅库客户端（分享、拉取官方+GitHub 双源去重、报失效）。 |
 | `library_offical.py` | 共享库服务端（仅官方站点 kindleear.appspot.com / cdhigh.serv00.net 用）。 |
 | `login.py` | 登录/登出/注册/重置密码（token 邮件 24h）；防暴力（失败 sleep 5s）。 |
@@ -134,7 +135,7 @@
 中英双语各一套：intro / deployment / config / extension（浏览器扩展）/ reader / faq / changelog。`docs/images/` 截图。**用户向文档，与 wiki/（开发者向）互补。**
 
 ## tests/
-- `runtests.py`：unittest 组织器（模块列表、coverage、failfast；⚠ 文件尾硬编码 `testonly='test_inbound_email'`）。
+- `runtests.py`：unittest 组织器（模块列表、coverage、failfast；`testonly=''` 默认跑全量，可填模块名单测）。
 - `test_base.py`：BaseTestCase（建 app/表/test_client/自动登录）。
 - `test_login/setting/admin/subscribe/adv/logs/inbound_email/share(排除)/library_offical.py`：对应 view 模块的功能测试。
 - `tools/`：`run_datastore_emulator.bat`、`test_datastore.py`、`test_nosql.py`（datastorm 模拟器验证）、`test_calibre2.py`（本地生成 epub/mobi 样书）。

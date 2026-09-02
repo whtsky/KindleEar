@@ -8,6 +8,13 @@ from recipe_helper import GenerateRecipeSource
 class SubscribeTestCase(BaseTestCase):
     login_required = 'admin'
 
+    def setUp(self):
+        super().setUp()
+        #测试数据库跨次运行会保留数据，先清理本模块用到的数据，保证用例可重复运行
+        Recipe.delete().execute()
+        BookedRecipe.delete().execute()
+        LastDelivered.delete().execute()
+
     def test_my_page(self):
         resp = self.client.get('/my')
         self.assertEqual(resp.status_code, 200)
@@ -77,13 +84,13 @@ class SubscribeTestCase(BaseTestCase):
         recipe = BookedRecipe.get_or_none(BookedRecipe.recipe_id=='builtin:am730')
         self.assertEqual(recipe.separated, True)
 
-        resp = self.client.post('/recipe/schedule', data={'id': 'builtin:am730', 'Wednesday': 1, 'Thursday': 1, '5': 1, '15': 1})
+        resp = self.client.post('/recipe/schedule', data={'id': 'builtin:am730', 'type': 'weekday', 'days': '2,3', 'times': '5,15'})
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json['status'], 'ok')
-        self.assertEqual(resp.json['send_days'], [2, 3])
+        self.assertEqual(resp.json['send_days'], {'type': 'weekday', 'days': [2, 3]})
         self.assertEqual(resp.json['send_times'], [5, 15])
         recipe = BookedRecipe.get_or_none(BookedRecipe.recipe_id=='builtin:am730')
-        self.assertEqual(recipe.send_days, [2, 3])
+        self.assertEqual(recipe.send_days, {'type': 'weekday', 'days': [2, 3]})
         self.assertEqual(recipe.send_times, [5, 15])
 
         resp = self.client.post('/recipe/unsubscribe', data={'id': 'builtin:am730'})

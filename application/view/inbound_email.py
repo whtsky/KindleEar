@@ -13,6 +13,7 @@ from calibre import guess_type
 from ..back_end.task_queue_adpt import create_delivery_task, create_url2book_task
 from ..back_end.db_models import KeUser
 from ..back_end.send_mail_adpt import send_to_kindle, send_html_mail
+from ..mail_hook import run_mail_hook, run_mail_content_hook
 from ..base_handler import *
 from build_ebook import html_to_book, convert_book
 
@@ -145,6 +146,10 @@ def ReceiveMailImpl(sender: str, to: Union[list,str], subject: str, txtBodies: l
     
     subject = DecodeSubject(subject)
 
+    #如果发件人匹配了用户上传的钩子文件，先调用钩子函数预处理邮件内容
+    subject, txtBodies, htmlBodies, attachments = run_mail_hook(user, sender, to, subject,
+        txtBodies, htmlBodies, attachments)
+
     #如果需要暂存邮件
     inbound_email = user.cfg('inbound_email')
     if not inbound_email:
@@ -192,7 +197,10 @@ def ReceiveMailImpl(sender: str, to: Union[list,str], subject: str, txtBodies: l
     soup = CreateMailSoup(subject, txtBodies, htmlBodies)
     if not soup:
         return "There is no html body neither text body."
-    
+
+    #如果发件人匹配了用户上传的钩子文件，调用钩子函数处理邮件正文和附件
+    soup, attachments = run_mail_content_hook(user, sender, to, soup, attachments)
+
     #提取文章的超链接
     links = [] if forceArticle else CollectSoupLinks(soup, forceLinks)
         

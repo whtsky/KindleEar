@@ -7,8 +7,7 @@ class LoginTestCase(BaseTestCase):
         resp = self.client.get('/login')
         self.assertEqual(resp.status_code, 200)
         data = resp.text
-        self.assertTrue(('Please use admin/admin to login at first time.' in data) or 
-            ('Please input username and password.' in data))
+        self.assertTrue(('Login' in data) and ('Username' in data) and ('Password' in data))
 
     def test_login_wrong_parms(self):
         resp = self.client.post('/login', data={'username': '', 'password': 'password'})

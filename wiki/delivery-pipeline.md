@@ -74,16 +74,22 @@ work/url2book.py :: Url2BookImpl（校验用户 + share key）
       ↓
 view/inbound_email.py :: ReceiveMailImpl
   1. 白名单校验（WhiteList）反垃圾
-  2. 可选存 InBox（附件存 UserBlob）
-  3. 指令解析（收件地址 dest 或主题）：
+  2. 发件人钩子预处理（mail_hook.run_mail_hook：hook_email()，
+     可改 subject/txtBodies/htmlBodies/attachments，暂存收件箱前调用）
+  3. 可选存 InBox（附件存 UserBlob）
+  4. 指令解析（收件地址 dest 或主题）：
        dest=trigger → 触发投递（create_delivery_task）
        dest=convert → mobi/prc/azw 附件转 epub 再推送
        主题 !links / !article / !lang=xx → 控制链接提取模式
-  4. 正文含 URL → create_url2book_task（URL 是电子书扩展名则 action=download）
+  5. 正文 soup 钩子（mail_hook.run_mail_content_hook：hook_email_soup()，
+     CreateMailSoup 后调用，可改 soup/attachments）
+  6. 正文含 URL → create_url2book_task（URL 是电子书扩展名则 action=download）
      无 URL → 正文（含内联图片）html_to_book() 转书推送，或直接 HTML 邮件转发
 ```
 
 `/_ah/bounce`（退信通知）仅记日志。
+
+**发件人钩子**：在 Advanced → Inbound Mail 页面对白名单条目上传 python 钩子文件（AJAX 上传，先编译校验），存 UserBlob（`hook:<地址>`），匹配优先级为 完整地址 > @域名 > `*`；钩子抛异常只记日志不影响投递。详见 extensibility.md 第 6 节。
 
 ## 电子书构建层（lib/build_ebook.py）
 

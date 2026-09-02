@@ -7,16 +7,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KindleEar v3.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-10 19:49-0300\n"
+"POT-Creation-Date: 2026-09-02 16:13-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: KindleEar <LL@li.org>\n"
 "Language: ja\n"
+"Language-Team: KindleEar <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: application/mail_hook.py:96
+#, python-brace-format
+msgid "The signature of {}() is invalid, it should be: def {}({})"
+msgstr "{}() のシグネチャが無効です。次の形式である必要があります： def {}({})"
+
+#: application/mail_hook.py:99
+#, python-brace-format
+msgid "Cannot find the function {} or {} in the hook file."
+msgstr "フックファイルに関数 {} または {} が見つかりません。"
 
 #: application/templates/admin.html:3 application/templates/base.html:53
 #: application/templates/base.html:192 application/templates/settings.html:263
@@ -33,18 +43,15 @@ msgstr "サインアップ設定"
 msgid "Save"
 msgstr "保存"
 
-#: application/templates/admin.html:21
-#: application/templates/user_account.html:31
+#: application/templates/admin.html:21 application/templates/user_account.html:31
 msgid "Email service"
 msgstr "メールサービス"
 
-#: application/templates/admin.html:23
-#: application/templates/user_account.html:34
+#: application/templates/admin.html:23 application/templates/user_account.html:34
 msgid "Same as admin"
 msgstr "管理者と同じ"
 
-#: application/templates/admin.html:24
-#: application/templates/user_account.html:35
+#: application/templates/admin.html:24 application/templates/user_account.html:35
 msgid "Independent"
 msgstr "独立"
 
@@ -77,20 +84,17 @@ msgid "Accounts"
 msgstr "アカウント"
 
 #: application/templates/admin.html:43
-#: application/templates/adv_inboundmail.html:61
-#: application/templates/my.html:34 application/view/admin.py:57
-#: application/view/admin.py:64 application/view/admin.py:91
+#: application/templates/adv_inboundmail.html:64 application/templates/my.html:34
+#: application/view/admin.py:57 application/view/admin.py:64
+#: application/view/admin.py:91
 msgid "Add"
 msgstr "追加"
 
-#: application/templates/admin.html:54
-#: application/templates/adv_archive.html:69
+#: application/templates/admin.html:54 application/templates/adv_archive.html:69
 #: application/templates/home.html:19 application/templates/login.html:24
-#: application/templates/logs.html:70
-#: application/templates/reset_password.html:19
+#: application/templates/logs.html:70 application/templates/reset_password.html:19
 #: application/templates/reset_password.html:20
-#: application/templates/settings.html:241
-#: application/templates/signup.html:21
+#: application/templates/settings.html:241 application/templates/signup.html:21
 #: application/templates/user_account.html:15
 msgid "Username"
 msgstr "ユーザー名"
@@ -102,13 +106,11 @@ msgstr "自動送信"
 #: application/templates/admin.html:56
 #: application/templates/change_password.html:27
 #: application/templates/reset_password.html:26
-#: application/templates/signup.html:33
-#: application/templates/user_account.html:27
+#: application/templates/signup.html:33 application/templates/user_account.html:27
 msgid "Email"
 msgstr "Email"
 
-#: application/templates/admin.html:57
-#: application/templates/user_account.html:39
+#: application/templates/admin.html:57 application/templates/user_account.html:39
 msgid "Expiration"
 msgstr "有効期限"
 
@@ -130,34 +132,28 @@ msgstr "決して"
 
 #: application/templates/admin.html:70
 #: application/templates/adv_inboundmail.html:26
-#: application/templates/settings.html:58
-#: application/templates/settings.html:181
+#: application/templates/settings.html:58 application/templates/settings.html:181
 #: application/templates/user_account.html:43
 msgid "7 Days"
 msgstr "7日間"
 
-#: application/templates/admin.html:72
-#: application/templates/user_account.html:44
+#: application/templates/admin.html:72 application/templates/user_account.html:44
 msgid "1 Month"
 msgstr "1ヶ月"
 
-#: application/templates/admin.html:74
-#: application/templates/user_account.html:45
+#: application/templates/admin.html:74 application/templates/user_account.html:45
 msgid "3 Months"
 msgstr "3ヶ月"
 
-#: application/templates/admin.html:76
-#: application/templates/user_account.html:46
+#: application/templates/admin.html:76 application/templates/user_account.html:46
 msgid "6 Months"
 msgstr "6ヶ月"
 
-#: application/templates/admin.html:78
-#: application/templates/user_account.html:47
+#: application/templates/admin.html:78 application/templates/user_account.html:47
 msgid "1 Year"
 msgstr "1年"
 
-#: application/templates/admin.html:80
-#: application/templates/user_account.html:48
+#: application/templates/admin.html:80 application/templates/user_account.html:48
 msgid "2 Years"
 msgstr "2年"
 
@@ -169,16 +165,15 @@ msgid "Edit account"
 msgstr "アカウントを編集"
 
 #: application/templates/admin.html:89
-#: application/templates/adv_inboundmail.html:54
-#: application/templates/adv_uploadcss.html:31
-#: application/templates/base.html:25 application/templates/webmail.html:22
+#: application/templates/adv_inboundmail.html:57
+#: application/templates/adv_uploadcss.html:31 application/templates/base.html:25
+#: application/templates/webmail.html:22
 msgid "Delete"
 msgstr "削除"
 
 #: application/templates/adv_archive.html:3
 #: application/templates/adv_archive.html:14
-#: application/templates/adv_base.html:57
-#: application/templates/adv_base.html:61
+#: application/templates/adv_base.html:57 application/templates/adv_base.html:61
 msgid "Archive"
 msgstr "アーカイブ"
 
@@ -199,17 +194,15 @@ msgid "Email or Username"
 msgstr "メールアドレスまたはユーザー名"
 
 #: application/templates/adv_archive.html:56
-#: application/templates/adv_archive.html:72
-#: application/templates/base.html:54 application/templates/home.html:20
-#: application/templates/login.html:28 application/templates/settings.html:245
-#: application/templates/signup.html:25
+#: application/templates/adv_archive.html:72 application/templates/base.html:54
+#: application/templates/home.html:20 application/templates/login.html:28
+#: application/templates/settings.html:245 application/templates/signup.html:25
 #: application/templates/user_account.html:19
 msgid "Password"
 msgstr "パスワード"
 
 #: application/templates/adv_archive.html:59
-#: application/templates/adv_archive.html:75
-#: application/templates/base.html:64
+#: application/templates/adv_archive.html:75 application/templates/base.html:64
 msgid "Verify"
 msgstr "確認"
 
@@ -236,54 +229,44 @@ msgstr "ホスト"
 msgid "Save settings"
 msgstr "設定を保存"
 
-#: application/templates/adv_base.html:39
-#: application/templates/adv_base.html:43
+#: application/templates/adv_base.html:39 application/templates/adv_base.html:43
 #: application/templates/adv_delivernow.html:8
 msgid "Deliver Now"
 msgstr "今すぐ配信"
 
-#: application/templates/adv_base.html:48
-#: application/templates/adv_base.html:52
+#: application/templates/adv_base.html:48 application/templates/adv_base.html:52
 #: application/templates/adv_inboundmail.html:3
 #: application/templates/adv_inboundmail.html:9
 #: application/templates/adv_inboundmail.html:14
 msgid "Inbound Mail"
 msgstr "受信メール"
 
-#: application/templates/adv_base.html:66
-#: application/templates/adv_base.html:70
-#: application/templates/adv_dict.html:3
-#: application/templates/adv_dict.html:13
+#: application/templates/adv_base.html:66 application/templates/adv_base.html:70
+#: application/templates/adv_dict.html:3 application/templates/adv_dict.html:13
 #: application/templates/reader.html:134
 msgid "Dictionary"
 msgstr "辞書"
 
-#: application/templates/adv_base.html:75
-#: application/templates/adv_base.html:83
-#: application/templates/adv_proxy.html:3
-#: application/templates/adv_proxy.html:12
+#: application/templates/adv_base.html:75 application/templates/adv_base.html:83
+#: application/templates/adv_proxy.html:3 application/templates/adv_proxy.html:12
 msgid "Proxy"
 msgstr "プロキシ"
 
-#: application/templates/adv_base.html:92
-#: application/templates/adv_base.html:96
+#: application/templates/adv_base.html:92 application/templates/adv_base.html:96
 #: application/templates/adv_import.html:8
 msgid "Import Feeds"
 msgstr "フィードをインポート"
 
-#: application/templates/adv_base.html:101
-#: application/templates/adv_base.html:105
+#: application/templates/adv_base.html:101 application/templates/adv_base.html:105
 msgid "Cover Image"
 msgstr "カバー画像"
 
-#: application/templates/adv_base.html:110
-#: application/templates/adv_base.html:114
+#: application/templates/adv_base.html:110 application/templates/adv_base.html:114
 #: application/templates/adv_uploadcss.html:3
 msgid "Stylesheet"
 msgstr "スタイルシート"
 
-#: application/templates/adv_base.html:119
-#: application/templates/adv_base.html:123
+#: application/templates/adv_base.html:119 application/templates/adv_base.html:123
 #: application/templates/adv_calibre_options.html:3
 #: application/templates/adv_calibre_options.html:12
 msgid "Calibre Options"
@@ -326,14 +309,12 @@ msgstr "配信"
 msgid "Set up dictionaries for online reading."
 msgstr "オンラインリーディング用の辞書を設定します。"
 
-#: application/templates/adv_dict.html:18
-#: application/templates/adv_dict.html:40
+#: application/templates/adv_dict.html:18 application/templates/adv_dict.html:40
 #: application/templates/adv_dict.html:62
 msgid "Book language"
 msgstr "本の言語"
 
-#: application/templates/adv_dict.html:27
-#: application/templates/adv_dict.html:49
+#: application/templates/adv_dict.html:27 application/templates/adv_dict.html:49
 #: application/templates/adv_dict.html:66
 #: application/templates/book_summarizer.html:23
 #: application/templates/book_translator.html:26
@@ -341,8 +322,7 @@ msgstr "本の言語"
 msgid "Engine"
 msgstr "エンジン"
 
-#: application/templates/adv_dict.html:33
-#: application/templates/adv_dict.html:55
+#: application/templates/adv_dict.html:33 application/templates/adv_dict.html:55
 #: application/templates/adv_dict.html:72
 #: application/templates/word_lookup.html:65
 msgid "Database"
@@ -352,8 +332,7 @@ msgstr "データベース"
 msgid "Other languages"
 msgstr "他の言語"
 
-#: application/templates/adv_dict.html:81
-#: application/templates/word_lookup.html:3
+#: application/templates/adv_dict.html:81 application/templates/word_lookup.html:3
 #: application/templates/word_lookup.html:79
 msgid "Word lookup"
 msgstr "単語検索"
@@ -411,8 +390,7 @@ msgid "Email Retention"
 msgstr "メール保存期間"
 
 #: application/templates/adv_inboundmail.html:25
-#: application/templates/settings.html:52
-#: application/templates/settings.html:175
+#: application/templates/settings.html:52 application/templates/settings.html:175
 msgid "1 Day"
 msgstr "1日"
 
@@ -422,8 +400,7 @@ msgid "30 Days"
 msgstr "30日間"
 
 #: application/templates/adv_inboundmail.html:28
-#: application/templates/settings.html:51
-#: application/templates/settings.html:174
+#: application/templates/settings.html:51 application/templates/settings.html:174
 msgid "No limit"
 msgstr "制限なし"
 
@@ -446,16 +423,63 @@ msgstr "%(name)sxxx@%(mailHost)sに送信されたメールは、あなたのKin
 msgid "Example"
 msgstr "例"
 
-#: application/templates/adv_inboundmail.html:59
+#: application/templates/adv_inboundmail.html:56
+#: application/templates/adv_inboundmail.html:78 application/view/adv.py:148
+msgid "Mail preprocess hook"
+msgstr "メール前処理フック"
+
+#: application/templates/adv_inboundmail.html:56
+msgid "Hooked"
+msgstr "フック済み"
+
+#: application/templates/adv_inboundmail.html:56
+msgid "Hook"
+msgstr "フック"
+
+#: application/templates/adv_inboundmail.html:62
 msgid "Please input mail address"
 msgstr "メールアドレスを入力してください"
+
+#: application/templates/adv_inboundmail.html:79
+#: application/templates/adv_uploadcss.html:30
+msgid "Upload"
+msgstr "アップロード"
+
+#: application/templates/adv_inboundmail.html:80
+msgid "View"
+msgstr "表示"
+
+#: application/templates/adv_inboundmail.html:81
+msgid "Please select a file."
+msgstr "ファイルを選択してください。"
+
+#: application/templates/adv_inboundmail.html:82
+#, python-brace-format
+msgid ""
+"A hook file ({0}) already exists for this address, you can replace or delete"
+" it."
+msgstr "このアドレスには既にフックファイル（{0}）が存在します。置き換えるか削除できます。"
+
+#: application/templates/adv_inboundmail.html:83
+msgid ""
+"The hook is a normal python file used to preprocess the mail from this "
+"sender before delivery. Define one or both of the following functions in the"
+" file:"
+msgstr "フックは、この差出人からのメールを配信前に前処理するための通常のpythonファイルです。ファイルに以下の関数を1つまたは両方定義してください："
+
+#: application/templates/adv_inboundmail.html:84
+msgid "The hook file have been saved successfully."
+msgstr "フックファイルは正常に保存されました。"
+
+#: application/templates/adv_inboundmail.html:85
+msgid "The hook file have been deleted."
+msgstr "フックファイルは削除されました。"
 
 #: application/templates/adv_proxy.html:13
 msgid "Supports"
 msgstr "サポート"
 
-#: application/templates/adv_proxy.html:24
-#: application/templates/adv_proxy.html:29
+#: application/templates/adv_proxy.html:24 application/templates/adv_proxy.html:29
 #: application/templates/book_audiolator.html:132
 #: application/templates/book_summarizer.html:105
 #: application/templates/book_translator.html:97
@@ -471,8 +495,7 @@ msgid "Upload cover image"
 msgstr "カバー画像をアップロード"
 
 #: application/templates/adv_uploadcover.html:10
-msgid ""
-"Upload cover images from local with an aspect ratio of approximately 0.625."
+msgid "Upload cover images from local with an aspect ratio of approximately 0.625."
 msgstr "アスペクト比0.625のローカルカバー画像をアップロードしてください。"
 
 #: application/templates/adv_uploadcover.html:13
@@ -510,10 +533,6 @@ msgstr "スタイルシートをアップロード"
 msgid "Upload a stylesheet from local (accept utf-8 only)."
 msgstr "ローカルからスタイルシートをアップロード（UTF-8のみ対応）。"
 
-#: application/templates/adv_uploadcss.html:30
-msgid "Upload"
-msgstr "アップロード"
-
 #: application/templates/autoback.html:3
 msgid "Auto back"
 msgstr "自動戻る"
@@ -522,8 +541,7 @@ msgstr "自動戻る"
 msgid "Auto back to previous page after 5 seconds"
 msgstr "5秒後に前のページに自動で戻る"
 
-#: application/templates/autoback.html:29
-#: application/templates/tipsback.html:15
+#: application/templates/autoback.html:29 application/templates/tipsback.html:15
 msgid "Click to back"
 msgstr "戻るにはクリック"
 
@@ -591,9 +609,7 @@ msgid "Language"
 msgstr "言語"
 
 #: application/templates/base.html:40
-msgid ""
-"Please write a category in text field if the one you wish is not in the "
-"list."
+msgid "Please write a category in text field if the one you wish is not in the list."
 msgstr "希望のカテゴリーがリストにない場合は、テキストフィールドに書いてください。"
 
 #: application/templates/base.html:41
@@ -625,6 +641,7 @@ msgid "Cannot subscribe this recipe, Error:"
 msgstr "このレシピを購読できません、エラー："
 
 #: application/templates/base.html:49
+#, python-brace-format
 msgid "Are you sure to Unsubscribe ({0})?"
 msgstr "本当に購読解除しますか（{0}）？"
 
@@ -684,7 +701,7 @@ msgstr "Kindleify選択"
 msgid "Verified"
 msgstr "確認済み"
 
-#: application/templates/base.html:66 application/view/login.py:79
+#: application/templates/base.html:66 application/view/login.py:95
 #: application/view/share.py:157
 msgid "The username does not exist or password is wrong."
 msgstr "ユーザー名が存在しないか、パスワードが間違っています。"
@@ -706,6 +723,7 @@ msgid "Thank you for your feedback, this feed will be reviewed soon."
 msgstr "フィードバックありがとうございます。このフィードは近日中にレビューされます。"
 
 #: application/templates/base.html:71
+#, python-brace-format
 msgid "Are you confirming to share the recipe ({0})?"
 msgstr "レシピ({0})を共有することを確認しますか？"
 
@@ -778,8 +796,7 @@ msgid "Delivery times"
 msgstr "配達時間"
 
 #: application/templates/base.html:89
-msgid ""
-"The customized delivery time for the recipe has been successfully saved."
+msgid "The customized delivery time for the recipe has been successfully saved."
 msgstr "レシピのカスタマイズされた配達時間は正常に保存されました。"
 
 #: application/templates/base.html:90
@@ -792,7 +809,7 @@ msgstr "ユーザー名またはパスワードが空です。"
 
 #: application/templates/base.html:92 application/view/admin.py:81
 #: application/view/admin.py:165 application/view/admin.py:191
-#: application/view/login.py:220 application/view/login.py:273
+#: application/view/login.py:236 application/view/login.py:289
 msgid "The two new passwords are dismatch."
 msgstr "2つの新しいパスワードが一致しません。"
 
@@ -804,7 +821,7 @@ msgstr "パスワードが正常に変更されました。"
 msgid "Account added successfully."
 msgstr "アカウントが正常に追加されました。"
 
-#: application/templates/base.html:95 application/view/login.py:128
+#: application/templates/base.html:95 application/view/login.py:144
 msgid "login required"
 msgstr "ログインが必要です"
 
@@ -818,14 +835,12 @@ msgid ""
 "resolution or upload in batches."
 msgstr "選択したファイルの合計サイズが16MBを超えています。画像の解像度を下げるか、バッチでアップロードしてください。"
 
-#: application/templates/base.html:98
-#: application/templates/book_translator.html:3
+#: application/templates/base.html:98 application/templates/book_translator.html:3
 #: application/templates/book_translator.html:17
 msgid "Bilingual Translator"
 msgstr "バイリンガル翻訳者"
 
-#: application/templates/base.html:99
-#: application/templates/book_summarizer.html:3
+#: application/templates/base.html:99 application/templates/book_summarizer.html:3
 #: application/templates/book_summarizer.html:14
 msgid "AI Summarizer"
 msgstr "AI要約者"
@@ -859,8 +874,7 @@ msgid ""
 "The test email has been successfully sent to the following addresses. Please"
 " check your inbox or spam folder to confirm its delivery. Depending on your "
 "email server, there may be a slight delay."
-msgstr ""
-"テストメールは以下のアドレスに正常に送信されました。受信箱またはスパムフォルダを確認して、配信を確認してください。メールサーバーによっては、若干の遅延が生じる場合があります。"
+msgstr "テストメールは以下のアドレスに正常に送信されました。受信箱またはスパムフォルダを確認して、配信を確認してください。メールサーバーによっては、若干の遅延が生じる場合があります。"
 
 #: application/templates/base.html:108
 msgid "Processing..."
@@ -872,8 +886,7 @@ msgstr "設定の検証は正しいです。"
 
 #: application/templates/base.html:110 application/templates/logs.html:23
 #: application/templates/logs.html:72 application/templates/my.html:17
-#: application/templates/settings.html:117
-#: application/templates/settings.html:118
+#: application/templates/settings.html:117 application/templates/settings.html:118
 #: application/templates/settings.html:155
 msgid "Title"
 msgstr "タイトル"
@@ -914,11 +927,11 @@ msgstr "少なくとも1つの項目を選択してください。"
 
 #: application/templates/base.html:119 application/view/admin.py:77
 #: application/view/admin.py:152 application/view/admin.py:189
-#: application/view/adv.py:459 application/view/extension.py:34
-#: application/view/extension.py:63 application/view/inbound_email.py:470
-#: application/view/inbound_email.py:478 application/view/inbound_email.py:493
-#: application/view/inbound_email.py:514 application/view/login.py:216
-#: application/view/login.py:245 application/view/reader.py:109
+#: application/view/adv.py:527 application/view/extension.py:34
+#: application/view/extension.py:63 application/view/inbound_email.py:478
+#: application/view/inbound_email.py:486 application/view/inbound_email.py:501
+#: application/view/inbound_email.py:522 application/view/login.py:232
+#: application/view/login.py:261 application/view/reader.py:109
 #: application/view/reader.py:126 application/view/share.py:37
 msgid "Some parameters are missing or wrong."
 msgstr "いくつかのパラメータが不足しているか、間違っています。"
@@ -942,8 +955,7 @@ msgstr "件名"
 
 #: application/templates/base.html:124 application/templates/logs.html:22
 #: application/templates/logs.html:71 application/templates/settings.html:117
-#: application/templates/settings.html:118
-#: application/templates/webmail.html:32
+#: application/templates/settings.html:118 application/templates/webmail.html:32
 msgid "Time"
 msgstr "時間"
 
@@ -1254,8 +1266,7 @@ msgstr "新しいパスワード"
 #: application/templates/change_password.html:23
 #: application/templates/reset_password.html:35
 #: application/templates/reset_password.html:36
-#: application/templates/signup.html:29
-#: application/templates/user_account.html:23
+#: application/templates/signup.html:29 application/templates/user_account.html:23
 msgid "Confirm password"
 msgstr "パスワード確認"
 
@@ -1293,8 +1304,7 @@ msgid ""
 "Empowered by %(calibre)s, you can easily create e-books on a Python-"
 "supported online platform and seamlessly transfer them to your e-reader or "
 "other reading devices."
-msgstr ""
-"%(calibre)sによってサポートされ、Python対応のオンラインプラットフォームで簡単に電子書籍を作成し、電子リーダーや他の読書デバイスにシームレスに転送できます。"
+msgstr "%(calibre)sによってサポートされ、Python対応のオンラインプラットフォームで簡単に電子書籍を作成し、電子リーダーや他の読書デバイスにシームレスに転送できます。"
 
 #: application/templates/home.html:42
 msgid "Share Your Ideas"
@@ -1306,15 +1316,14 @@ msgid ""
 "With the open-source %(kindleear)s application, you can set up your own "
 "server to deliver daily news feeds to your e-reader and effortlessly share "
 "the service with friends."
-msgstr ""
-"オープンソースの%(kindleear)sアプリケーションを使って、自分のサーバーを設定し、電子リーダーに毎日のニュースフィードを配信し、簡単にサービスを友達と共有できます。"
+msgstr "オープンソースの%(kindleear)sアプリケーションを使って、自分のサーバーを設定し、電子リーダーに毎日のニュースフィードを配信し、簡単にサービスを友達と共有できます。"
 
 #: application/templates/library.html:50 application/templates/my.html:61
 msgid "Search"
 msgstr "検索"
 
-#: application/templates/login.html:38 application/view/login.py:197
-#: application/view/login.py:204
+#: application/templates/login.html:38 application/view/login.py:213
+#: application/view/login.py:220
 msgid ""
 "The website does not allow registration. You can ask the owner for an "
 "account."
@@ -1432,8 +1441,7 @@ msgstr "タッチ領域を視覚化"
 msgid "Help"
 msgstr "ヘルプ"
 
-#: application/templates/reader.html:125
-#: application/templates/reader_404.html:135
+#: application/templates/reader.html:125 application/templates/reader_404.html:135
 msgid "Menu"
 msgstr "メニュー"
 
@@ -1445,13 +1453,11 @@ msgstr "すべて折りたたむ"
 msgid "Expand all"
 msgstr "すべて展開"
 
-#: application/templates/reader.html:149
-#: application/templates/reader_404.html:140
+#: application/templates/reader.html:149 application/templates/reader_404.html:140
 msgid "Prev"
 msgstr "前へ"
 
-#: application/templates/reader.html:154
-#: application/templates/reader_404.html:143
+#: application/templates/reader.html:154 application/templates/reader_404.html:143
 msgid "Next page"
 msgstr "次のページ"
 
@@ -1469,8 +1475,8 @@ msgid "Reset password"
 msgstr "パスワードをリセット"
 
 #: application/templates/settings.html:14
-msgid ""
-"Your account will pause after {0}, please log in again before it expires."
+#, python-brace-format
+msgid "Your account will pause after {0}, please log in again before it expires."
 msgstr "{0}後にアカウントが一時停止されます。期限前に再ログインしてください。"
 
 #: application/templates/settings.html:23
@@ -1525,28 +1531,23 @@ msgstr "オンライン書籍の保持日数"
 msgid "Web shelf"
 msgstr "ウェブ棚"
 
-#: application/templates/settings.html:53
-#: application/templates/settings.html:176
+#: application/templates/settings.html:53 application/templates/settings.html:176
 msgid "2 Days"
 msgstr "2日"
 
-#: application/templates/settings.html:54
-#: application/templates/settings.html:177
+#: application/templates/settings.html:54 application/templates/settings.html:177
 msgid "3 Days"
 msgstr "3日"
 
-#: application/templates/settings.html:55
-#: application/templates/settings.html:178
+#: application/templates/settings.html:55 application/templates/settings.html:178
 msgid "4 Days"
 msgstr "4日"
 
-#: application/templates/settings.html:56
-#: application/templates/settings.html:179
+#: application/templates/settings.html:56 application/templates/settings.html:179
 msgid "5 Days"
 msgstr "5日"
 
-#: application/templates/settings.html:57
-#: application/templates/settings.html:180
+#: application/templates/settings.html:57 application/templates/settings.html:180
 msgid "6 Days"
 msgstr "6日"
 
@@ -1722,8 +1723,8 @@ msgstr "添付ファイルとして転送"
 msgid "Word"
 msgstr "単語"
 
-#: application/view/admin.py:48 application/view/adv.py:437
-#: application/view/adv.py:528 application/view/settings.py:67
+#: application/view/admin.py:48 application/view/adv.py:505
+#: application/view/adv.py:596 application/view/settings.py:67
 #: application/view/translator.py:88 application/view/translator.py:172
 #: application/view/translator.py:254
 msgid "Settings Saved!"
@@ -1739,12 +1740,12 @@ msgstr "アカウントを追加"
 msgid "You do not have sufficient privileges."
 msgstr "十分な権限がありません。"
 
-#: application/view/admin.py:79 application/view/login.py:44
-#: application/view/login.py:222
+#: application/view/admin.py:79 application/view/login.py:55
+#: application/view/login.py:238
 msgid "The username includes unsafe chars."
 msgstr "ユーザー名に安全でない文字が含まれています。"
 
-#: application/view/admin.py:83 application/view/login.py:224
+#: application/view/admin.py:83 application/view/login.py:240
 msgid "Already exist the username."
 msgstr "そのユーザー名は既に存在します。"
 
@@ -1755,6 +1756,7 @@ msgstr "パスワードに非ASCII文字が含まれています。"
 #: application/view/admin.py:107 application/view/admin.py:132
 #: application/view/admin.py:163 application/view/extension.py:32
 #: application/view/extension.py:61
+#, python-brace-format
 msgid "The username '{}' does not exist."
 msgstr "ユーザー名 '{}' は存在しません。"
 
@@ -1778,97 +1780,128 @@ msgstr "旧パスワードが間違っています。"
 msgid "Changes saved successfully."
 msgstr "変更が正常に保存されました。"
 
-#: application/view/adv.py:104 application/view/adv.py:105
-#: application/view/adv.py:106 application/view/adv.py:107
-#: application/view/adv.py:108 application/view/adv.py:109
-#: application/view/adv.py:110 application/view/adv.py:111
-#: application/view/adv.py:112 application/view/adv.py:113
+#: application/view/adv.py:103
+msgid "The mail address is not in the whitelist."
+msgstr "そのメールアドレスはホワイトリストにありません。"
+
+#: application/view/adv.py:108
+msgid "Can not read uploaded file."
+msgstr "アップロードされたファイルを読み取れません。"
+
+#: application/view/adv.py:110
+msgid "The hook file is too large."
+msgstr "フックファイルが大きすぎます。"
+
+#: application/view/adv.py:118
+msgid ""
+"Failed to decode the file. Please ensure that your file is saved in utf-8 "
+"encoding."
+msgstr "ファイルのデコードに失敗しました。ファイルがutf-8エンコーディングで保存されていることを確認してください。"
+
+#: application/view/adv.py:123
+msgid "Failed to save the hook. Error:"
+msgstr "フックの保存に失敗しました。エラー："
+
+#: application/view/adv.py:137 application/view/adv.py:151
+msgid "The hook does not exist."
+msgstr "フックは存在しません。"
+
+#: application/view/adv.py:172 application/view/adv.py:173
+#: application/view/adv.py:174 application/view/adv.py:175
+#: application/view/adv.py:176 application/view/adv.py:177
+#: application/view/adv.py:178 application/view/adv.py:179
+#: application/view/adv.py:180 application/view/adv.py:181
+#, python-brace-format
 msgid "Append hyperlink '{}' to article"
 msgstr "記事にハイパーリンク '{}' を追加"
 
-#: application/view/adv.py:104 application/view/adv.py:105
-#: application/view/adv.py:106 application/view/adv.py:107
-#: application/view/adv.py:108
+#: application/view/adv.py:172 application/view/adv.py:173
+#: application/view/adv.py:174 application/view/adv.py:175
+#: application/view/adv.py:176
+#, python-brace-format
 msgid "Save to {}"
 msgstr "{} に保存"
 
-#: application/view/adv.py:104
+#: application/view/adv.py:172
 msgid "evernote"
 msgstr "evernote"
 
-#: application/view/adv.py:105
+#: application/view/adv.py:173
 msgid "wiz"
 msgstr "wiz"
 
-#: application/view/adv.py:106
+#: application/view/adv.py:174
 msgid "pocket"
 msgstr "pocket"
 
-#: application/view/adv.py:107
+#: application/view/adv.py:175
 msgid "instapaper"
 msgstr "instapaper"
 
-#: application/view/adv.py:108
+#: application/view/adv.py:176
 msgid "wallabag"
 msgstr "wallabag"
 
-#: application/view/adv.py:109 application/view/adv.py:110
-#: application/view/adv.py:111 application/view/adv.py:112
+#: application/view/adv.py:177 application/view/adv.py:178
+#: application/view/adv.py:179 application/view/adv.py:180
+#, python-brace-format
 msgid "Share on {}"
 msgstr "{} で共有"
 
-#: application/view/adv.py:109
+#: application/view/adv.py:177
 msgid "weibo"
 msgstr "微博"
 
-#: application/view/adv.py:110
+#: application/view/adv.py:178
 msgid "facebook"
 msgstr "facebook"
 
-#: application/view/adv.py:112
+#: application/view/adv.py:180
 msgid "tumblr"
 msgstr "tumblr"
 
-#: application/view/adv.py:113
+#: application/view/adv.py:181
 msgid "Open in browser"
 msgstr "ブラウザで開く"
 
-#: application/view/adv.py:114
+#: application/view/adv.py:182
 msgid "Append qrcode of url to article"
 msgstr "記事にURLのQRコードを追加"
 
-#: application/view/adv.py:381 application/view/share.py:54
+#: application/view/adv.py:449 application/view/share.py:54
 #: application/view/subscribe.py:250
+#, python-brace-format
 msgid "Unknown command: {}"
 msgstr "不明なコマンド: {}"
 
-#: application/view/adv.py:439 application/view/adv.py:530
+#: application/view/adv.py:507 application/view/adv.py:598
 msgid "The format is invalid."
 msgstr "形式が無効です。"
 
-#: application/view/adv.py:562
+#: application/view/adv.py:630
+#, python-brace-format
 msgid "Authorization Error!<br/>{}"
 msgstr "認証エラー!<br/>{}"
 
-#: application/view/adv.py:583
+#: application/view/adv.py:651
 msgid "Success authorized by Pocket!"
 msgstr "Pocketによる認証に成功しました！"
 
-#: application/view/adv.py:589
-msgid ""
-"Failed to request authorization of Pocket!<hr/>See details "
-"below:<br/><br/>{}"
+#: application/view/adv.py:657
+#, python-brace-format
+msgid "Failed to request authorization of Pocket!<hr/>See details below:<br/><br/>{}"
 msgstr "Pocketの認証リクエストに失敗しました！<hr/>詳細は以下をご覧ください：<br/><br/>{}"
 
-#: application/view/adv.py:610
+#: application/view/adv.py:678
 msgid "The Instapaper service encountered an error. Please try again later."
 msgstr "Instapaperサービスでエラーが発生しました。後ほど再試行してください。"
 
-#: application/view/adv.py:623
+#: application/view/adv.py:691
+#, python-brace-format
 msgid "Request type [{}] unsupported"
 msgstr "リクエストタイプ [{}] はサポートされていません"
 
-#: application/view/deliver.py:82 application/view/login.py:169
+#: application/view/deliver.py:82 application/view/login.py:185
 #: application/view/share.py:41
 msgid "The username does not exist or the email is empty."
 msgstr "ユーザー名が存在しないか、メールアドレスが空です。"
@@ -1886,6 +1919,7 @@ msgid "The rules parameter is invalid."
 msgstr "ルールのパラメータが無効です。"
 
 #: application/view/library.py:32
+#, python-brace-format
 msgid "Cannot fetch data from {}, status: {}"
 msgstr "{} からデータを取得できません、ステータス: {}"
 
@@ -1895,73 +1929,73 @@ msgstr "{} からデータを取得できません、ステータス: {}"
 msgid "The recipe does not exist."
 msgstr "レシピは存在しません。"
 
-#: application/view/login.py:27 application/view/login.py:76
+#: application/view/login.py:38 application/view/login.py:92
+#, python-brace-format
 msgid "Please use {}/{} to login at first time."
 msgstr "初回ログインには {}/{} を使用してください。"
 
-#: application/view/login.py:40
+#: application/view/login.py:51
 msgid "Username is empty."
 msgstr "ユーザー名が空です。"
 
-#: application/view/login.py:42
+#: application/view/login.py:53
 msgid "The len of username reached the limit of 25 chars."
 msgstr "ユーザー名の長さが25文字の制限に達しました。"
 
-#: application/view/login.py:80
+#: application/view/login.py:96
 msgid "Forgot password?"
 msgstr "パスワードを忘れましたか？"
 
-#: application/view/login.py:148 application/view/login.py:275
+#: application/view/login.py:164 application/view/login.py:291
 msgid "The token is wrong or expired."
 msgstr "トークンが間違っているか期限切れです。"
 
-#: application/view/login.py:151
+#: application/view/login.py:167
 msgid "Please input the correct username and email to reset password."
 msgstr "パスワードをリセットするには、正しいユーザー名とメールアドレスを入力してください。"
 
-#: application/view/login.py:153
+#: application/view/login.py:169
+#, python-brace-format
 msgid "The email of account '{name}' is {email}."
 msgstr "アカウント '{name}' のメールアドレスは {email} です。"
 
-#: application/view/login.py:174
+#: application/view/login.py:190
 msgid "Reset password success, Please close this page and login again."
 msgstr "パスワードのリセットに成功しました。このページを閉じて、再度ログインしてください。"
 
-#: application/view/login.py:177
+#: application/view/login.py:193
 msgid "The email you input is not associated with this account."
 msgstr "入力されたメールアドレスはこのアカウントに関連付けられていません。"
 
-#: application/view/login.py:186
+#: application/view/login.py:202
 msgid "The link to reset your password has been sent to your email."
 msgstr "パスワードをリセットするためのリンクがメールで送信されました。"
 
-#: application/view/login.py:187
+#: application/view/login.py:203
 msgid "Please check your email inbox within 24 hours."
 msgstr "24時間以内にメールボックスを確認してください。"
 
-#: application/view/login.py:218
+#: application/view/login.py:234
 msgid "The invitation code is invalid."
 msgstr "招待コードは無効です。"
 
-#: application/view/login.py:226
-msgid ""
-"Failed to create an account. Please contact the administrator for "
-"assistance."
+#: application/view/login.py:242
+msgid "Failed to create an account. Please contact the administrator for assistance."
 msgstr "アカウントの作成に失敗しました。管理者にお問い合わせください。"
 
-#: application/view/login.py:236
+#: application/view/login.py:252
 msgid "Successfully created account."
 msgstr "アカウントが正常に作成されました。"
 
-#: application/view/login.py:247
+#: application/view/login.py:263
 msgid "Reset KindleEar password"
 msgstr "KindleEarのパスワードをリセット"
 
-#: application/view/login.py:248
+#: application/view/login.py:264
 msgid "This is an automated email. Please do not reply to it."
 msgstr "これは自動送信されたメールです。返信しないでください。"
 
-#: application/view/login.py:249
+#: application/view/login.py:265
 msgid "You can click the following link to reset your KindleEar password."
 msgstr "以下のリンクをクリックしてKindleEarのパスワードをリセットできます。"
 
@@ -1975,6 +2009,7 @@ msgid "The text is empty."
 msgstr "テキストが空です。"
 
 #: application/view/reader.py:239
+#, python-brace-format
 msgid "No definitions found for '{}'."
 msgstr "'{}' の定義が見つかりません。"
 
@@ -1983,6 +2018,7 @@ msgid "Did you mean?"
 msgstr "意味しましたか？"
 
 #: application/view/reader.py:324 application/view/reader.py:331
+#, python-brace-format
 msgid "Failed to push: {}"
 msgstr "プッシュに失敗しました: {}"
 
@@ -1990,251 +2026,254 @@ msgstr "プッシュに失敗しました: {}"
 msgid "Failed to create ebook."
 msgstr "電子書籍の作成に失敗しました。"
 
-#: application/view/settings.py:131
+#: application/view/settings.py:132
 msgid ""
 "You have not yet set up your email address. Please go to the 'Account' page "
 "to add your email address firstly."
 msgstr "まだメールアドレスを設定していません。まず「アカウント」ページに移動して、メールアドレスを追加してください。"
 
-#: application/view/settings.py:215
+#: application/view/settings.py:216
 msgid "English"
 msgstr "英語"
 
-#: application/view/settings.py:216
+#: application/view/settings.py:217
 msgid "Simplified Chinese"
 msgstr "简体中文"
 
-#: application/view/settings.py:217
+#: application/view/settings.py:218
 msgid "Traditional Chinese"
 msgstr "繁體中文"
 
-#: application/view/settings.py:218
+#: application/view/settings.py:219
 msgid "French"
 msgstr "フランス語"
 
-#: application/view/settings.py:219
+#: application/view/settings.py:220
 msgid "Spanish"
 msgstr "スペイン語"
 
-#: application/view/settings.py:220
+#: application/view/settings.py:221
 msgid "Portuguese"
 msgstr "ポルトガル語"
 
-#: application/view/settings.py:221
+#: application/view/settings.py:222
 msgid "German"
 msgstr "ドイツ語"
 
-#: application/view/settings.py:222
+#: application/view/settings.py:223
 msgid "Italian"
 msgstr "イタリア語"
 
-#: application/view/settings.py:223
+#: application/view/settings.py:224
 msgid "Japanese"
 msgstr "日本語"
 
-#: application/view/settings.py:224
+#: application/view/settings.py:225
 msgid "Russian"
 msgstr "ロシア語"
 
-#: application/view/settings.py:225
+#: application/view/settings.py:226
 msgid "Turkish"
 msgstr "トルコ語"
 
-#: application/view/settings.py:226
+#: application/view/settings.py:227
 msgid "Korean"
 msgstr "韓国語"
 
-#: application/view/settings.py:227
+#: application/view/settings.py:228
 msgid "Arabic"
 msgstr "アラビア語"
 
-#: application/view/settings.py:228
+#: application/view/settings.py:229
 msgid "Czech"
 msgstr "チェコ語"
 
-#: application/view/settings.py:229
+#: application/view/settings.py:230
 msgid "Dutch"
 msgstr "オランダ語"
 
-#: application/view/settings.py:230
+#: application/view/settings.py:231
 msgid "Greek"
 msgstr "ギリシャ語"
 
-#: application/view/settings.py:231
+#: application/view/settings.py:232
 msgid "Hindi"
 msgstr "ヒンディー語"
 
-#: application/view/settings.py:232
+#: application/view/settings.py:233
 msgid "Malaysian"
 msgstr "マレー語"
 
-#: application/view/settings.py:233
+#: application/view/settings.py:234
 msgid "Bengali"
 msgstr "ベンガル語"
 
-#: application/view/settings.py:234
+#: application/view/settings.py:235
 msgid "Persian"
 msgstr "ペルシャ語"
 
-#: application/view/settings.py:235
+#: application/view/settings.py:236
 msgid "Urdu"
 msgstr "ウルドゥー語"
 
-#: application/view/settings.py:236
+#: application/view/settings.py:237
 msgid "Swahili"
 msgstr "スワヒリ語"
 
-#: application/view/settings.py:237
+#: application/view/settings.py:238
 msgid "Vietnamese"
 msgstr "ベトナム語"
 
-#: application/view/settings.py:238
+#: application/view/settings.py:239
 msgid "Punjabi"
 msgstr "パンジャビ語"
 
-#: application/view/settings.py:239
+#: application/view/settings.py:240
 msgid "Javanese"
 msgstr "ジャワ語"
 
-#: application/view/settings.py:240
+#: application/view/settings.py:241
 msgid "Tagalog"
 msgstr "タガログ語"
 
-#: application/view/settings.py:241
+#: application/view/settings.py:242
 msgid "Hausa"
 msgstr "ハウサ語"
 
-#: application/view/settings.py:242
+#: application/view/settings.py:243
 msgid "Thai"
 msgstr "タイ語"
 
-#: application/view/settings.py:243
+#: application/view/settings.py:244
 msgid "Polish"
 msgstr "ポーランド語"
 
-#: application/view/settings.py:244
+#: application/view/settings.py:245
 msgid "Romanian"
 msgstr "ルーマニア語"
 
-#: application/view/settings.py:245
+#: application/view/settings.py:246
 msgid "Hungarian"
 msgstr "ハンガリー語"
 
-#: application/view/settings.py:246
+#: application/view/settings.py:247
 msgid "Swedish"
 msgstr "スウェーデン語"
 
-#: application/view/settings.py:247
+#: application/view/settings.py:248
 msgid "Hebrew"
 msgstr "ヘブライ語"
 
-#: application/view/settings.py:248
+#: application/view/settings.py:249
 msgid "Norwegian"
 msgstr "ノルウェー語"
 
-#: application/view/settings.py:249
+#: application/view/settings.py:250
 msgid "Finnish"
 msgstr "フィンランド語"
 
-#: application/view/settings.py:250
+#: application/view/settings.py:251
 msgid "Danish"
 msgstr "デンマーク語"
 
-#: application/view/settings.py:251
+#: application/view/settings.py:252
 msgid "Ukrainian"
 msgstr "ウクライナ語"
 
-#: application/view/settings.py:252
+#: application/view/settings.py:253
 msgid "Tamil"
 msgstr "タミル語"
 
-#: application/view/settings.py:253
+#: application/view/settings.py:254
 msgid "Marathi"
 msgstr "マラーティー語"
 
-#: application/view/settings.py:254
+#: application/view/settings.py:255
 msgid "Burmese"
 msgstr "ビルマ語"
 
-#: application/view/settings.py:255
+#: application/view/settings.py:256
 msgid "Amharic"
 msgstr "アムハラ語"
 
-#: application/view/settings.py:256
+#: application/view/settings.py:257
 msgid "Azerbaijani"
 msgstr "アゼルバイジャン語"
 
-#: application/view/settings.py:257
+#: application/view/settings.py:258
 msgid "Kazakh"
 msgstr "カザフ語"
 
-#: application/view/settings.py:258
+#: application/view/settings.py:259
 msgid "Serbian"
 msgstr "セルビア語"
 
-#: application/view/settings.py:259
+#: application/view/settings.py:260
 msgid "Croatian"
 msgstr "Hrvatski"
 
-#: application/view/settings.py:260
+#: application/view/settings.py:261
 msgid "Slovak"
 msgstr "Slovenčina"
 
-#: application/view/settings.py:261
+#: application/view/settings.py:262
 msgid "Bulgarian"
 msgstr "Български"
 
-#: application/view/settings.py:262
+#: application/view/settings.py:263
 msgid "Icelandic"
 msgstr "Íslenska"
 
-#: application/view/settings.py:263
+#: application/view/settings.py:264
 msgid "Lithuanian"
 msgstr "Lietuvių"
 
-#: application/view/settings.py:264
+#: application/view/settings.py:265
 msgid "Latvian"
 msgstr "Latviešu"
 
-#: application/view/settings.py:265
+#: application/view/settings.py:266
 msgid "Estonian"
 msgstr "Eesti"
 
-#: application/view/settings.py:266
+#: application/view/settings.py:267
 msgid "Macedonian"
 msgstr "Македонски"
 
-#: application/view/settings.py:267
+#: application/view/settings.py:268
 msgid "Albanian"
 msgstr "Shqip"
 
-#: application/view/settings.py:268
+#: application/view/settings.py:269
 msgid "Galician"
 msgstr "Galego"
 
-#: application/view/settings.py:269
+#: application/view/settings.py:270
 msgid "Welsh"
 msgstr "Cymraeg"
 
-#: application/view/settings.py:270
+#: application/view/settings.py:271
 msgid "Basque"
 msgstr "Euskara"
 
-#: application/view/settings.py:271
+#: application/view/settings.py:272
 msgid "Nepali"
 msgstr "नेपाली"
 
 #: application/view/share.py:60
+#, python-brace-format
 msgid "There is no {} email yet."
 msgstr "{}のメールアドレスはまだ存在しません。"
 
 #: application/view/share.py:108 application/view/share.py:133
 #: application/view/share.py:155 application/view/share.py:177
+#, python-brace-format
 msgid "Saved to your {} account."
 msgstr "{}アカウントに保存されました。"
 
 #: application/view/share.py:111 application/view/share.py:129
 #: application/view/share.py:158 application/view/share.py:179
+#, python-brace-format
 msgid "Failed save to {}."
 msgstr "{}への保存に失敗しました。"
 
@@ -2244,6 +2283,7 @@ msgid "Reason :"
 msgstr "理由："
 
 #: application/view/share.py:121
+#, python-brace-format
 msgid "Unauthorized {} account!"
 msgstr "{}アカウントは認証されていません！"
 
@@ -2252,6 +2292,7 @@ msgid "See details below:"
 msgstr "詳細は以下をご覧ください："
 
 #: application/view/share.py:157
+#, python-brace-format
 msgid "Unknown: {}"
 msgstr "不明: {}"
 
@@ -2320,3 +2361,10 @@ msgstr "このレシピのログイン情報は保存されました。"
 #: application/view/translator.py:81 application/view/translator.py:165
 msgid "The api key is required."
 msgstr "APIキーが必要です。"
+
+#~ msgid "Src"
+#~ msgstr "ソース"
+
+#~ msgid "Delete hook"
+#~ msgstr "フックを削除"
+

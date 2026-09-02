@@ -45,4 +45,4 @@ If you discover the code has diverged from the wiki (check `__Version__` in `mai
 - `application/lib/` is mostly vendored third-party code (calibre, readability, polyglot...) — do not treat as project business logic, avoid casual edits.
 - User settings live mostly in JSON columns of `KeUser` (`base_config`/`book_config`/`custom`), not in dedicated table columns.
 - Any entity change in `application/back_end/db_models.py` must work on BOTH peewee (SQL) and weedata (NoSQL) backends; schema changes need an `AppInfo.dbSchemaVersion` migration.
-- `tests/runtests.py` currently hardcodes `testonly='test_inbound_email'` at the end — clear it to run the full suite.
+- `tests/runtests.py` runs the full suite by default now (`testonly=''`); pass a module name to run a single module. Tests clean their data in `setUp` and can be re-run against the same `database.db`.

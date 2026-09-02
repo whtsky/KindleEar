@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 #一些高级设置功能页面
 #Author: cdhigh <https://github.com/cdhigh>
-import re, io, textwrap, json, base64
+import re, io, os, textwrap, json, base64
 from urllib.parse import unquote, urljoin, urlparse
 from bs4 import BeautifulSoup
 from html import escape
@@ -13,6 +13,8 @@ from PIL import Image
 from ..base_handler import *
 from ..back_end.db_models import *
 from ..ke_utils import ke_decrypt, str_to_int, str_to_bool, safe_eval, xml_escape, xml_unescape
+from ..mail_hook import (get_mail_hook, get_mail_hook_filename, load_hook_payload, save_mail_hook,
+    delete_mail_hook, compile_mail_hook, MAX_HOOK_FILE_SIZE)
 from ..lib.pocket import Pocket
 from ..lib.wallabag import WallaBag
 from ..lib.urlopener import UrlOpener
@@ -58,8 +60,15 @@ def AdvInboundMail(user: KeUser):
     inbound_email = user.cfg("inbound_email")
     keep_in_email_days = user.cfg("keep_in_email_days")
 
-    return adv_render_template('adv_inboundmail.html', 'inboundMail', user=user, mailHost=mailHost, 
-        inbound_email=inbound_email, keep_in_email_days=keep_in_email_days)
+    #已经上传了钩子文件的白名单条目 {白名单地址: 钩子文件名}
+    hookFiles = {}
+    for wl in user.white_lists():
+        file = get_mail_hook_filename(user, wl.mail)
+        if file:
+            hookFiles[wl.mail] = file
+
+    return adv_render_template('adv_inboundmail.html', 'inboundMail', user=user, mailHost=mailHost,
+        inbound_email=inbound_email, keep_in_email_days=keep_in_email_days, hookFiles=hookFiles)
     
 @bpAdv.post("/advanced/inboundmail", endpoint='AdvInboundMailPost')
 @login_required()
@@ -82,6 +91,64 @@ def AdvInboundMailPost(user: KeUser):
         user.set_cfg('keep_in_email_days', keep_in_email_days)
         user.save()
         return redirect(url_for('bpAdv.AdvInboundMail'))
+
+#上传入站邮件钩子文件的AJAX处理函数，针对某个白名单条目
+#和上传自定义recipe一样，先编译检查错误，有错误返回提示，无错误保存到数据库
+@bpAdv.post("/advanced/inboundmail/hook", endpoint='AdvInboundMailHookPost')
+@login_required(forAjax=True)
+def AdvInboundMailHookPost(user: KeUser):
+    mail = request.form.get('mail', '').strip()
+    wlists = [wl.mail.lower() for wl in user.white_lists()]
+    if not mail or (mail.lower() not in wlists):
+        return {'status': _('The mail address is not in the whitelist.')}
+
+    upload = request.files.get('hook_file')
+    data = upload.read() if upload else b''
+    if not data:
+        return {'status': _("Can not read uploaded file.")}
+    if len(data) > MAX_HOOK_FILE_SIZE:
+        return {'status': _('The hook file is too large.')}
+
+    #尝试按照文件内声明的编码解码，参考上传recipe的处理
+    match = re.search(br'coding[:=]\s*([-\w.]+)', data[:200])
+    enc = match.group(1).decode('utf-8') if match else 'utf-8'
+    try:
+        src = data.decode(enc)
+    except Exception:
+        return {'status': _("Failed to decode the file. Please ensure that your file is saved in utf-8 encoding.")}
+
+    try:
+        compile_mail_hook(src, os.path.basename(upload.filename or 'hook.py')) #type:ignore
+    except Exception as e:
+        return {'status': _("Failed to save the hook. Error:") + str(e)}
+
+    filename = os.path.basename(upload.filename or 'hook.py') #type:ignore
+    save_mail_hook(user, mail, src, filename)
+    return {'status': 'ok', 'mail': mail, 'file': filename}
+
+#删除某个白名单条目的入站邮件钩子的AJAX处理函数
+@bpAdv.post("/advanced/inboundmail/hook/delete", endpoint='AdvInboundMailHookDeletePost')
+@login_required(forAjax=True)
+def AdvInboundMailHookDeletePost(user: KeUser):
+    mail = request.form.get('mail', '').strip()
+    if mail and delete_mail_hook(user, mail):
+        return {'status': 'ok'}
+    else:
+        return {'status': _('The hook does not exist.')}
+
+#查看白名单条目对应的钩子文件源码，和查看上传的recipe源码一样的展示方式
+@bpAdv.route("/advanced/inboundmail/hook/view/<mail>", endpoint='AdvViewMailHookSource')
+@login_required()
+def AdvViewMailHookSource(mail: str, user: KeUser):
+    htmlTpl = """<!DOCTYPE html>\n<html><head><meta charset="utf-8"><link rel="stylesheet" href="/static/prism.css" type="text/css"/>
+    <title>{title}</title></head><body class="line-numbers"><pre><code class="language-python">{body}</code></pre>
+    <script type="text/javascript" src="/static/prism.js"></script></body></html>"""
+    filename, src = load_hook_payload(get_mail_hook(user, mail))
+    if src:
+        title = '{} : {}'.format(_('Mail preprocess hook'), xml_escape(mail))
+        return htmlTpl.format(title=title, body=xml_escape(src))
+    else:
+        return htmlTpl.format(title='Error', body=_('The hook does not exist.'))
     
 #删除白名单项目
 @bpAdv.route("/advanceddel", endpoint='AdvDel')
@@ -91,6 +158,7 @@ def AdvDel(user: KeUser):
     if wlist_id:
         dbItem = WhiteList.get_by_id_or_none(wlist_id)
         if dbItem:
+            delete_mail_hook(user, dbItem.mail) #同时删除此白名单条目对应的钩子文件
             dbItem.delete_instance()
         return redirect(url_for("bpAdv.AdvInboundMail") + '#whitelist')
     return redirect(url_for("bpAdmin.Admin"))
