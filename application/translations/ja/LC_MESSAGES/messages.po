@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KindleEar v3.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-02 16:13-0300\n"
+"POT-Creation-Date: 2026-09-03 04:37-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ja\n"
@@ -18,12 +18,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: application/mail_hook.py:96
+#: application/mail_hook.py:107 application/mail_hook.py:110
+#, python-brace-format
+msgid "Forbidden module import in mail hook: {}"
+msgstr "メールフックでのモジュールのインポートは禁止されています：{}"
+
+#: application/mail_hook.py:113
+#, python-brace-format
+msgid "Forbidden attribute access in mail hook: {}"
+msgstr "メールフックでの属性アクセスは禁止されています：{}"
+
+#: application/mail_hook.py:116
+#, python-brace-format
+msgid "Forbidden function call in mail hook: {}()"
+msgstr "メールフックでの関数呼び出しは禁止されています：{}()"
+
+#: application/mail_hook.py:133
 #, python-brace-format
 msgid "The signature of {}() is invalid, it should be: def {}({})"
 msgstr "{}() のシグネチャが無効です。次の形式である必要があります： def {}({})"
 
-#: application/mail_hook.py:99
+#: application/mail_hook.py:136
 #, python-brace-format
 msgid "Cannot find the function {} or {} in the hook file."
 msgstr "フックファイルに関数 {} または {} が見つかりません。"
@@ -928,9 +943,9 @@ msgstr "少なくとも1つの項目を選択してください。"
 #: application/templates/base.html:119 application/view/admin.py:77
 #: application/view/admin.py:152 application/view/admin.py:189
 #: application/view/adv.py:527 application/view/extension.py:34
-#: application/view/extension.py:63 application/view/inbound_email.py:478
-#: application/view/inbound_email.py:486 application/view/inbound_email.py:501
-#: application/view/inbound_email.py:522 application/view/login.py:232
+#: application/view/extension.py:63 application/view/inbound_email.py:481
+#: application/view/inbound_email.py:489 application/view/inbound_email.py:504
+#: application/view/inbound_email.py:525 application/view/login.py:232
 #: application/view/login.py:261 application/view/reader.py:109
 #: application/view/reader.py:126 application/view/share.py:37
 msgid "Some parameters are missing or wrong."

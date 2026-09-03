@@ -16,6 +16,7 @@ from ..back_end.send_mail_adpt import send_to_kindle, send_html_mail
 from ..mail_hook import run_mail_hook, run_mail_content_hook
 from ..base_handler import *
 from build_ebook import html_to_book, convert_book
+from urlopener import UrlOpener
 
 try:
     from google.appengine.api import mail as gae_mail
@@ -146,6 +147,8 @@ def ReceiveMailImpl(sender: str, to: Union[list,str], subject: str, txtBodies: l
     
     subject = DecodeSubject(subject)
 
+    UrlOpener.set_proxy(user.cfg('proxy'))
+
     #如果发件人匹配了用户上传的钩子文件，先调用钩子函数预处理邮件内容
     subject, txtBodies, htmlBodies, attachments = run_mail_hook(user, sender, to, subject,
         txtBodies, htmlBodies, attachments)
@@ -203,7 +206,8 @@ def ReceiveMailImpl(sender: str, to: Union[list,str], subject: str, txtBodies: l
 
     #提取文章的超链接
     links = [] if forceArticle else CollectSoupLinks(soup, forceLinks)
-        
+    title = subject[:SUBJECT_WORDCNT] or f'KindleEar_{user.local_time("%Y-%m-%d_%H-%M")}'
+
     if links:
         #判断是下载文件还是要转发邮件内容
         isBook = ((dest in ('book', 'file', 'download')) or
@@ -220,7 +224,7 @@ def ReceiveMailImpl(sender: str, to: Union[list,str], subject: str, txtBodies: l
                  'urls': '|'.join(links),
                  'action': action,
                  'key': user.share_links.get('key', ''),
-                 'title': subject[:SUBJECT_WORDCNT],
+                 'title': title,
                  'language': language}
         create_url2book_task(params)
     else: #直接转发邮件正文
@@ -230,11 +234,11 @@ def ReceiveMailImpl(sender: str, to: Union[list,str], subject: str, txtBodies: l
         
         #有图像的话，生成MOBI或EPUB，没有图像则直接推送HTML文件
         if imgs:
-            book = html_to_book(str(soup), subject[:SUBJECT_WORDCNT], user, imgs)
+            book = html_to_book(str(soup), title, user, imgs)
         else:
-            book = (f'KindleEar_{user.local_time("%Y-%m-%d_%H-%M")}.html', str(soup).encode('utf-8'))
+            book = (f'{title}.html', str(soup).encode('utf-8'))
 
-        send_to_kindle(user, subject[:SUBJECT_WORDCNT], book, fileWithTime=False)
+        send_to_kindle(user, title, book, fileWithTime=False)
     
     return 'OK'
 

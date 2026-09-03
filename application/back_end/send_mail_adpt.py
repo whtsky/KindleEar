@@ -58,13 +58,15 @@ def send_to_kindle(user, title, attachment, fileWithTime=True, to=None):
     subject = f"KindleEar {lcTime}"
     to = to or user.cfg('kindle_email')
 
-    if not isinstance(attachment, (tuple, list)):
+    if isinstance(attachment, tuple):
+        attachment = [attachment]
+    elif not isinstance(attachment, list):
         lcTime = "({})".format(lcTime) if fileWithTime else ""
         fileName = f"{title}{lcTime}.{user.book_cfg('type')}"
-        attachment = (fileName, attachment)
-    
-    if not isinstance(attachment, list):
-        attachment = [attachment]
+        attachment = [(fileName, attachment)]
+
+    for idx in range(len(attachment)):
+        attachment[idx][0] = sanitize_filename(attachment[idx][0])
 
     status = 'ok'
     body = "Deliver from KindleEar"
