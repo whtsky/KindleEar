@@ -146,6 +146,31 @@ However, if you wish to merge recipe files into the built-in library:
 **Note:** You can directly use calibre's `builtin_recipes.zip` and `builtin_recipes.xml`.   
 
 
+## How to Implement Hooks for Incoming Emails?
+
+KindleEar provides two hooks for incoming emails. They allow you to perform some preprocessing or postprocessing after receiving an email but before forwarding it to the Kindle, such as reformatting the content or removing advertisements.
+
+The hooks have the following signatures. Your Python file for hooking can contain either one or both of these functions:
+
+```python
+# sender: sender's email address
+# to: recipient's email address, usually the Kindle address
+# subject: email subject
+# txtBodies: list of strings containing the plain-text blocks of the email; may be empty
+# htmlBodies: list of HTML strings containing the HTML content of the email; may be empty
+# attachments: list of email attachments in the form [(fileName, content), ...]
+# Return: You can modify the lists in place and return None, or return a modified tuple.
+def hook_email(sender, to, subject, txtBodies, htmlBodies, attachments):
+    # return None or (subject, txtBodies, htmlBodies, attachments)
+
+# soup: BeautifulSoup instance containing the integrated HTML content
+#       after the email has been processed
+# Return: You can modify soup/attachments in place and return None,
+#         or return (soup, attachments)
+def hook_email_soup(sender, to, soup, attachments):
+    # return None or (soup, attachments)
+```
+
 
 ## I have more questions, where can I ask?
 If you have more questions, you can submit an issue at [https://github.com/cdhigh/KindleEar/issues](https://github.com/cdhigh/KindleEar/issues) and wait for a reply. Before submitting a question, it's recommended to search for previously submitted issues first. Maybe someone has already submitted a similar issue? If no one has submitted a similar issue, when you submit a new one, it's recommended to attach the Logs information of [GAE backend](https://console.cloud.google.com/appengine) or the platform you deployed to for problem location, which can also get you a faster reply.

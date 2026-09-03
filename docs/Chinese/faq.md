@@ -137,7 +137,25 @@ KindleEar提供了一个通过网页上传recipe文件的功能，在calibre的r
 4. 删除recipe文件。    
 **注：** 可以直接使用calibre的 builtin_recipes.zip/builtin_recipes.xml。   
 
+## 入站邮件的Hook(钩子函数)如何实现？   
+KindleEar的入站邮件提供两个钩子函数, 可以在接收到邮件后转发给Kindle之前进行一些预处理或后处理, 比如重新排版/去除广告等.
+钩子函数的签名如下,你的钩子函数python文件需要包含一个或两个函数:
+```
+#sender: 发件人邮件地址
+#to: 收件人邮件地址,一般为Kindle地址
+#subject: 邮件主题
+#txtBodies: 字符串列表, 邮件的纯文本块内容, 不一定存在
+#htmlBodies: HTML字符串列表, 邮件的HTML内容, 不一定存在
+#attachments: 邮件附件列表, 格式为 [(fileName, content),...]
+#返回: 可以在列表上直接修改并且返回None, 或者返回修改后的元祖
+def hook_email(sender, to, subject, txtBodies, htmlBodies, attachments):
+    #return None or (subject, txtBodies, htmlBodies, attachments)
 
+#soup: 邮件经过处理整合后的HTML的BeautifulSoup实例对象
+#返回: 可以直接修改soup/attachments并且返回None, 或返回 (soup, attachments) 
+def hook_email_soup(sender, to, soup, attachments):
+    #return None or (soup, attachments)   
+```
 
 ## 我还有更多问题，到哪里去问？
 如果你碰到更多问题，可以到 [https://github.com/cdhigh/KindleEar/issues](https://github.com/cdhigh/KindleEar/issues) 去提交一个issue，然后等待答复，不过在提交问题之前，还是建议先搜索一下别人先前提交的issues，说不定已经有人重复提过了相关问题呢？   
