@@ -55,7 +55,11 @@ def save_mail_hook(user, mail, src, filename):
 #删除某个白名单条目的钩子，返回是否删除了内容
 def delete_mail_hook(user, mail):
     dbItem = get_mail_hook(user, mail)
-    return dbItem.delete_instance() > 0 if dbItem else False
+    if dbItem:
+        dbItem.delete_instance()
+        return True
+    else:
+        return False
 
 #根据发件人地址匹配钩子，优先级：完整地址 > @域名 > *，没有则返回None
 def match_mail_hook(user, sender):

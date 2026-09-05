@@ -66,7 +66,7 @@ def send_to_kindle(user, title, attachment, fileWithTime=True, to=None):
         attachment = [(fileName, attachment)]
 
     for idx in range(len(attachment)):
-        attachment[idx][0] = sanitize_filename(attachment[idx][0])
+        attachment[idx] = (sanitize_filename(attachment[idx][0]), attachment[idx][1])
 
     status = 'ok'
     body = "Deliver from KindleEar"

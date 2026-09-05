@@ -154,7 +154,7 @@ The hooks have the following signatures. Your Python file for hooking can contai
 
 ```python
 # sender: sender's email address
-# to: recipient's email address, usually the Kindle address
+# to: recipient's email address
 # subject: email subject
 # txtBodies: list of strings containing the plain-text blocks of the email; may be empty
 # htmlBodies: list of HTML strings containing the HTML content of the email; may be empty
