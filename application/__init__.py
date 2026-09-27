@@ -38,6 +38,7 @@ def init_app(name, cfgMap, set_env, debug=False):
 
     from .back_end.db_models import create_database_tables, connect_database, close_database
     create_database_tables()
+    randomize_keys(app)
 
     @app.before_request
     def BeforeRequest():
@@ -59,3 +60,29 @@ def init_app(name, cfgMap, set_env, debug=False):
     register_routes(app)
 
     return app
+
+#如果用户没有修改预定义的登录和推送密钥, 这里生成随机密钥并保存到数据库
+#需要在create_database_tables()之后调用, 保证数据库表结构有效
+#'n7ro8QJI1qfe'/'cY9gKC' 是3.5.1及之前版本预置的密钥
+def randomize_keys(app):
+    secret_key = app.config.get('SECRET_KEY')
+    if not secret_key or secret_key == 'n7ro8QJI1qfe':
+        from .back_end.db_models import AppInfo
+        secret_key = AppInfo.get_value(AppInfo.secretKey)
+        if not secret_key:
+            from .ke_utils import new_secret_key
+            secret_key = new_secret_key(20)
+            AppInfo.set_value(AppInfo.secretKey, secret_key)
+        app.config['SECRET_KEY'] = secret_key
+        os.environ['SECRET_KEY'] = secret_key
+
+    delivery_key = app.config.get('DELIVERY_KEY')
+    if not delivery_key or delivery_key == 'cY9gKC':
+        delivery_key = AppInfo.get_value(AppInfo.deliveryKey)
+        if not delivery_key:
+            from .ke_utils import new_secret_key
+            delivery_key = new_secret_key(6)
+            AppInfo.set_value(AppInfo.deliveryKey, delivery_key)
+        app.config['DELIVERY_KEY'] = delivery_key
+        os.environ['DELIVERY_KEY'] = delivery_key
+

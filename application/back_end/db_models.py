@@ -309,6 +309,8 @@ class AppInfo(MyBaseModel):
     description = CharField(default='')
 
     dbSchemaVersion = 'dbSchemaVersion'
+    secretKey = 'secretKey'
+    deliveryKey = 'deliveryKey'
     lastSharedRssTime = 'lastSharedRssTime'
     newUserMailService = 'newUserMailService'
     signupType = 'signupType'

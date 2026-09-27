@@ -8,7 +8,7 @@
 import re, os, sys, subprocess, secrets, datetime
 from itertools import chain
 
-def new_secret_key(length=12):
+def new_secret_key(length=20):
     allchars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXZYabcdefghijklmnopqrstuvwxyz'
     return ''.join([secrets.choice(allchars) for i in range(length)])
 

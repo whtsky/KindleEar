@@ -46,3 +46,13 @@ If you discover the code has diverged from the wiki (check `__Version__` in `mai
 - User settings live mostly in JSON columns of `KeUser` (`base_config`/`book_config`/`custom`), not in dedicated table columns.
 - Any entity change in `application/back_end/db_models.py` must work on BOTH peewee (SQL) and weedata (NoSQL) backends; schema changes need an `AppInfo.dbSchemaVersion` migration.
 - `tests/runtests.py` runs the full suite by default now (`testonly=''`); pass a module name to run a single module. Tests clean their data in `setUp` and can be re-run against the same `database.db`.
+
+## The following operations require explicit user confirmation
+
+* Deleting files, directories, or data owned by the user.
+* Discarding uncommitted changes, including `git reset --hard`, `git clean -fd`, or overwriting changes via checkout.
+* Rewriting shared Git history or force-pushing to a remote repository.
+* Running migrations, cleanup operations, or scripts against a real database that delete, overwrite, or modify data in bulk.
+* Deploying to a production environment.
+* Creating, modifying, or deleting real external data, or calling APIs or services that may incur charges.
+* Any other operation that may cause data loss, alter shared or external real-world state, or require manual intervention to recover.
